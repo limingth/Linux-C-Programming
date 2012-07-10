@@ -29,6 +29,25 @@ void travel(link p)
 	travel(p->next);
 }
 
+void destory(link p)
+{
+	link next;
+
+	if (p == NULL)
+	{
+		printf("destory finished\n");
+		return;
+	}
+	
+	next = p->next;
+	free(p);
+
+	destory(next);
+
+	return;
+}
+
+
 link head = NULL;
 
 int main(void)
@@ -41,5 +60,7 @@ int main(void)
 
 	travel(head);
 
+	destory(head);
+	
 	return 0;
 }
