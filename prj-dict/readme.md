@@ -50,3 +50,8 @@
 	程序执行格式如下所示。
 	./mydict --translate http://www.google.com.hk/intl/en/about/
 	./mydict --translate http://www.kernel.org -o result.html
+
+How to get
+===========
+
+	git clone git://github.com/limingth/Linux-C-Programming.git
