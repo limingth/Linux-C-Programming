@@ -61,6 +61,8 @@
 ========
 	ncurses 库 - 实现 Linux 终端上的图形界面编程
 		参考资料： google  "NCURSES Programming HOWTO中文版"
+		安装： sudo apt-get install ncurses-dev
+		使用： gcc your_program.c -lncurses
 		
 	wget 命令 - 网页抓取工具
 		参考资料： man wget
