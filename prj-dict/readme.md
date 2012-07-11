@@ -26,15 +26,15 @@
 
 	程序执行格式如下所示：
 	./mydict 
-		默认使用 dict.dat 文本词库进行单词查找。
-	./mydict -f mydict.dat
-		表示使用文本词库 mydict.dat 文件进行单词查找。
+		默认使用 dict.txt 文本词库进行单词查找。
+	./mydict -f mydict.txt
+		表示使用文本词库 mydict.txt 文件进行单词查找。
 
 # 2. 支持用户自添加新词/删除单词
 	用户添加的新词存放在指定文件中。如果待查单词在词库中找不到，则使用用户提供的词库。用户的词库使用文本形式保存，便于用户修改。
 
 	程序执行格式如下所示。
-	./mydict --add/del -f mydict.dat
+	./mydict --add/del -f mydict.txt
 	--add/del 表示进入删除或者添加模式，-f为固定参数，用来指定用户词库文件名.
 
 # 3. 查询单词的词频统计
@@ -51,7 +51,11 @@
 	./mydict --translate http://www.google.com.hk/intl/en/about/
 	./mydict --translate http://www.kernel.org -o result.html
 
-How to get
-===========
 
+资源下载
+========
 	git clone git://github.com/limingth/Linux-C-Programming.git
+
+
+
+
