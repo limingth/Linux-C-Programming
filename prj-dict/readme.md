@@ -27,10 +27,26 @@
 	程序执行格式如下所示：
 	./mydict 
 		默认使用 dict.dat 文本词库进行单词查找。
-	./mydict -text mydict.dat
+	./mydict -f mydict.dat
 		表示使用文本词库 mydict.dat 文件进行单词查找。
 
-# 2. 词频统计
+# 2. 支持用户自添加新词/删除单词
+	用户添加的新词存放在指定文件中。如果待查单词在词库中找不到，则使用用户提供的词库。用户的词库使用文本形式保存，便于用户修改。
 
-# 3. 查询优化
+	程序执行格式如下所示。
+	./mydict --add/del -f mydict.dat
+	--add/del 表示进入删除或者添加模式，-f为固定参数，用来指定用户词库文件名.
 
+# 3. 查询单词的词频统计
+	用户查询过程中，记录查询单词和查询次数，便于用户进行单词词频的统计。
+
+	程序执行格式如下所示。
+	./mydict --search-sort
+	按照查询次数从多到少依次列出用户曾经查询过的单词和查询次数。
+
+# 4. 网页翻译
+	用户指定一个web页面的链接，程序对网页上面的正文内容进行翻译，并输出到一个文本文件中。
+
+	程序执行格式如下所示。
+	./mydict --translate http://www.google.com.hk/intl/en/about/
+	./mydict --translate http://www.kernel.org -o result.html
