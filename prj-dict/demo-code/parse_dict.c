@@ -37,7 +37,7 @@ int parse_dict(char * filename, void(*callback)(char *, char *))
 	int state = 0;	// init state
 	int input = 0;	// 0: space		1: alpha	2: digit
 
-	char word[32];
+	char word[64];
 	char meaning[256];
 
 	FILE * fp;
@@ -102,8 +102,8 @@ int parse_dict(char * filename, void(*callback)(char *, char *))
 			case 2:
 				word[i] = '\0';
 				counter++;
-				printf("%d ", counter);
-				printf("word found! value = <%s>\n", word);
+				//printf("%d ", counter);
+				//printf("word found! value = <%s>\n", word);
 				j = 0;
 				state = 2;
 				break;
@@ -127,7 +127,7 @@ int parse_dict(char * filename, void(*callback)(char *, char *))
 
 			case 2:
 				meaning[j] = '\0';
-				printf("meaning found! value = <%s>\n", meaning);
+				//printf("meaning found! value = <%s>\n", meaning);
 				callback(word, meaning);
 				state = 0;
 				break;
@@ -142,6 +142,7 @@ int parse_dict(char * filename, void(*callback)(char *, char *))
 		}
 	}
 
+	fclose(fp);
 	printf("parse dict file finished!\n");
 
 	return 0;

@@ -1,4 +1,5 @@
 /* linkedlist.c */
+#include <stdio.h>
 #include <stdlib.h>
 #include "linkedlist.h"
 
@@ -17,13 +18,19 @@ void free_node(link p)
 	free(p);
 }
 
-link search(char * key)
+link search(char * key, int * counter)
 {
 	link p;
-	for (p = head; p; p = p->next)
+	int i = 0;
+
+	*counter = 1;
+	for (p = head; p; p = p->next, (*counter)++)
+	{
+		printf("\rcmp %d...", *counter);
 		//if (p->item == key)
 		if (strcmp(p->word.name, key) == 0)
 			return p;
+	}
 	return NULL;
 }
 

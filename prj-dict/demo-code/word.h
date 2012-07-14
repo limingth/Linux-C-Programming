@@ -1,11 +1,14 @@
+#ifndef WORD_H
+#define WORD_H
 // one word 
 struct word
 {
-	char name[32];
-	char meaning[256];
+	char name[64];
+	char meaning[512];
 };
 
 typedef struct word word_t;
+#endif
 
 #if 0
 // link list
