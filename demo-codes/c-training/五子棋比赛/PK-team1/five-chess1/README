@@ -1,0 +1,50 @@
+
+This program is used to play five-chess-competition
+
+You can run it on Linux.
+
+Usage:
+
+To compile it, you should do
+	$ make 
+
+To run it, you should do
+	$ make run
+
+To clean, you should do
+	$ make clean
+
+To release a tar.gz, you should change Makefile version to 0.x and do
+	$ make release 
+
+When it runs, you will see this:
+
+Hello, FIVE CHESS PLAYER!
+Ready to go? GO!
+
+   0 1 2 3 4 5 6 7
+ - - - - - - - - -
+0| 0 0 0 0 0 0 0 0 
+1| 0 0 0 0 0 0 0 0 
+2| 0 0 0 0 0 0 0 0 
+3| 0 0 0 0 0 0 0 0 
+4| 0 0 0 0 0 0 0 0 
+5| 0 0 0 0 0 0 0 0 
+6| 0 0 0 0 0 0 0 0 
+7| 0 0 0 0 0 0 0 0 
+
+you can input 4 4 to put a chess on board
+player 1: 
+
+here, you can input 
+0 0
+to put a chess at the left-top
+
+or
+7 7
+to put a chess at the right-bottom
+
+or
+4 4
+to put a chess at the middle position
+	

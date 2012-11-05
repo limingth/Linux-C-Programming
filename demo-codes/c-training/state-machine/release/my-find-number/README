@@ -1,0 +1,16 @@
+Compile:
+	make
+
+USAGE:
+	./a.out - debug version 
+	./demo  - release version
+
+for example:
+
+Teach $./demo 
+please input a string : abc123a.+2.4
+your input string is: abc123a.+2.4 
+number 1 found!  -> 123 
+number 2 found!  -> 2 
+number 3 found!  -> 4 
+
