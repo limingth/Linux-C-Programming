@@ -1,0 +1,2 @@
+
+#define MAX  1

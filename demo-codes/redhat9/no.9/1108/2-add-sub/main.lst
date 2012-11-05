@@ -1,0 +1,37 @@
+
+main.o:     file format elf32-i386
+
+Disassembly of section .text:
+
+00000000 <main>:
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	83 ec 08             	sub    $0x8,%esp
+   6:	83 e4 f0             	and    $0xfffffff0,%esp
+   9:	b8 00 00 00 00       	mov    $0x0,%eax
+   e:	29 c4                	sub    %eax,%esp
+  10:	83 ec 08             	sub    $0x8,%esp
+  13:	6a 02                	push   $0x2
+  15:	6a 01                	push   $0x1
+  17:	e8 fc ff ff ff       	call   18 <main+0x18>
+  1c:	83 c4 10             	add    $0x10,%esp
+  1f:	89 45 fc             	mov    %eax,0xfffffffc(%ebp)
+  22:	83 ec 08             	sub    $0x8,%esp
+  25:	ff 35 00 00 00 00    	pushl  0x0
+  2b:	68 00 00 00 00       	push   $0x0
+  30:	e8 fc ff ff ff       	call   31 <main+0x31>
+  35:	83 c4 10             	add    $0x10,%esp
+  38:	83 ec 08             	sub    $0x8,%esp
+  3b:	6a 02                	push   $0x2
+  3d:	6a 01                	push   $0x1
+  3f:	e8 fc ff ff ff       	call   40 <main+0x40>
+  44:	83 c4 10             	add    $0x10,%esp
+  47:	89 45 f8             	mov    %eax,0xfffffff8(%ebp)
+  4a:	83 ec 08             	sub    $0x8,%esp
+  4d:	ff 75 f8             	pushl  0xfffffff8(%ebp)
+  50:	68 09 00 00 00       	push   $0x9
+  55:	e8 fc ff ff ff       	call   56 <main+0x56>
+  5a:	83 c4 10             	add    $0x10,%esp
+  5d:	b8 00 00 00 00       	mov    $0x0,%eax
+  62:	c9                   	leave  
+  63:	c3                   	ret    

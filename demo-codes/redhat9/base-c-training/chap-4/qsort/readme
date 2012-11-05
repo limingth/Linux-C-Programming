@@ -1,0 +1,27 @@
+ 算法
+
+快速排序使用分治法（Divide and conquer）策略来把一个序列（list）分为两个子序列（sub-lists）。
+
+步骤为：
+
+   1. 从数列中挑出一个元素，称为 "基准"（pivot），
+   2. 重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分割之后，该基准是它的最后位置。这个称为分割（partition）操作。
+   3. 递回地（recursive）把小于之元素的子数列和大于之元素的子数列排序。 
+
+递回的最底部情形，是数列的大小是零或一，也就使永远都已经被排序好了。虽然一直递回下去，但是这个算法总会结束，因为在每次的迭代（iteration）中，它至少会把一个元素摆到它最后的位置去。
+
+在简单的虚拟码中，算法可以被表示为：
+
+ function quicksort(q)
+     var list less, pivotList, greater
+     if length(q) ≤ 1 {
+         return q
+     } else {
+         select a pivot value pivot from q
+         for each x in q except the pivot element
+             if x < pivot then add x to less
+             if x ≥ pivot then add x to greater
+         add pivot to pivotList
+         return concatenate(quicksort(less), pivotList, quicksort(greater))
+     }
+

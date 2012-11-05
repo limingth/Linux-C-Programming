@@ -1,0 +1,2 @@
+test_serial.o: \
+   serial.h

@@ -1,0 +1,326 @@
+
+hello:     file format elf32-i386
+
+Disassembly of section .text:
+
+08048278 <_start>:
+ 8048278:	31 ed                	xor    %ebp,%ebp
+ 804827a:	5e                   	pop    %esi
+ 804827b:	89 e1                	mov    %esp,%ecx
+ 804827d:	83 e4 f0             	and    $0xfffffff0,%esp
+ 8048280:	50                   	push   %eax
+ 8048281:	54                   	push   %esp
+ 8048282:	52                   	push   %edx
+ 8048283:	68 50 84 04 08       	push   $0x8048450
+ 8048288:	68 20 84 04 08       	push   $0x8048420
+ 804828d:	51                   	push   %ecx
+ 804828e:	56                   	push   %esi
+ 804828f:	68 66 83 04 08       	push   $0x8048366
+ 8048294:	e8 bf ff ff ff       	call   8048258 <_init+0x28>
+ 8048299:	f4                   	hlt    
+ 804829a:	90                   	nop    
+ 804829b:	90                   	nop    
+
+0804829c <call_gmon_start>:
+ 804829c:	55                   	push   %ebp
+ 804829d:	89 e5                	mov    %esp,%ebp
+ 804829f:	53                   	push   %ebx
+ 80482a0:	50                   	push   %eax
+ 80482a1:	e8 00 00 00 00       	call   80482a6 <call_gmon_start+0xa>
+ 80482a6:	5b                   	pop    %ebx
+ 80482a7:	81 c3 9a 13 00 00    	add    $0x139a,%ebx
+ 80482ad:	8b 83 14 00 00 00    	mov    0x14(%ebx),%eax
+ 80482b3:	85 c0                	test   %eax,%eax
+ 80482b5:	74 02                	je     80482b9 <call_gmon_start+0x1d>
+ 80482b7:	ff d0                	call   *%eax
+ 80482b9:	8b 5d fc             	mov    0xfffffffc(%ebp),%ebx
+ 80482bc:	c9                   	leave  
+ 80482bd:	c3                   	ret    
+ 80482be:	90                   	nop    
+ 80482bf:	90                   	nop    
+
+080482c0 <__do_global_dtors_aux>:
+ 80482c0:	55                   	push   %ebp
+ 80482c1:	89 e5                	mov    %esp,%ebp
+ 80482c3:	83 ec 08             	sub    $0x8,%esp
+ 80482c6:	80 3d 58 96 04 08 00 	cmpb   $0x0,0x8049658
+ 80482cd:	75 29                	jne    80482f8 <__do_global_dtors_aux+0x38>
+ 80482cf:	a1 58 95 04 08       	mov    0x8049558,%eax
+ 80482d4:	8b 10                	mov    (%eax),%edx
+ 80482d6:	85 d2                	test   %edx,%edx
+ 80482d8:	74 17                	je     80482f1 <__do_global_dtors_aux+0x31>
+ 80482da:	89 f6                	mov    %esi,%esi
+ 80482dc:	83 c0 04             	add    $0x4,%eax
+ 80482df:	a3 58 95 04 08       	mov    %eax,0x8049558
+ 80482e4:	ff d2                	call   *%edx
+ 80482e6:	a1 58 95 04 08       	mov    0x8049558,%eax
+ 80482eb:	8b 10                	mov    (%eax),%edx
+ 80482ed:	85 d2                	test   %edx,%edx
+ 80482ef:	75 eb                	jne    80482dc <__do_global_dtors_aux+0x1c>
+ 80482f1:	c6 05 58 96 04 08 01 	movb   $0x1,0x8049658
+ 80482f8:	c9                   	leave  
+ 80482f9:	c3                   	ret    
+ 80482fa:	89 f6                	mov    %esi,%esi
+
+080482fc <frame_dummy>:
+ 80482fc:	55                   	push   %ebp
+ 80482fd:	89 e5                	mov    %esp,%ebp
+ 80482ff:	83 ec 08             	sub    $0x8,%esp
+ 8048302:	a1 3c 96 04 08       	mov    0x804963c,%eax
+ 8048307:	85 c0                	test   %eax,%eax
+ 8048309:	74 19                	je     8048324 <frame_dummy+0x28>
+ 804830b:	b8 00 00 00 00       	mov    $0x0,%eax
+ 8048310:	85 c0                	test   %eax,%eax
+ 8048312:	74 10                	je     8048324 <frame_dummy+0x28>
+ 8048314:	83 ec 0c             	sub    $0xc,%esp
+ 8048317:	68 3c 96 04 08       	push   $0x804963c
+ 804831c:	e8 df 7c fb f7       	call   0 <_init-0x8048230>
+ 8048321:	83 c4 10             	add    $0x10,%esp
+ 8048324:	c9                   	leave  
+ 8048325:	c3                   	ret    
+ 8048326:	90                   	nop    
+ 8048327:	90                   	nop    
+
+08048328 <add>:
+
+#include <stdio.h>
+
+int add( int a, int b )
+{
+ 8048328:	55                   	push   %ebp
+ 8048329:	89 e5                	mov    %esp,%ebp
+ 804832b:	83 ec 08             	sub    $0x8,%esp
+	printf( "add called!\n" );
+ 804832e:	83 ec 0c             	sub    $0xc,%esp
+ 8048331:	68 cc 84 04 08       	push   $0x80484cc
+ 8048336:	e8 2d ff ff ff       	call   8048268 <_init+0x38>
+ 804833b:	83 c4 10             	add    $0x10,%esp
+	return a+b;
+ 804833e:	8b 45 0c             	mov    0xc(%ebp),%eax
+ 8048341:	03 45 08             	add    0x8(%ebp),%eax
+}
+ 8048344:	c9                   	leave  
+ 8048345:	c3                   	ret    
+
+08048346 <sub>:
+
+int sub( int a, int b )
+{
+ 8048346:	55                   	push   %ebp
+ 8048347:	89 e5                	mov    %esp,%ebp
+ 8048349:	83 ec 08             	sub    $0x8,%esp
+	printf( "sub called!\n" );
+ 804834c:	83 ec 0c             	sub    $0xc,%esp
+ 804834f:	68 d9 84 04 08       	push   $0x80484d9
+ 8048354:	e8 0f ff ff ff       	call   8048268 <_init+0x38>
+ 8048359:	83 c4 10             	add    $0x10,%esp
+	return a-b;
+ 804835c:	8b 55 0c             	mov    0xc(%ebp),%edx
+ 804835f:	8b 45 08             	mov    0x8(%ebp),%eax
+ 8048362:	29 d0                	sub    %edx,%eax
+}
+ 8048364:	c9                   	leave  
+ 8048365:	c3                   	ret    
+
+08048366 <main>:
+
+#if 0
+int * f (int a, int b);
+#endif
+
+int (*f)(int, int) = 0;
+int (*f0)(int) = 0;
+
+int (*fa[2])( int, int );
+
+int main( int argc, char * argv[] )
+{
+ 8048366:	55                   	push   %ebp
+ 8048367:	89 e5                	mov    %esp,%ebp
+ 8048369:	83 ec 08             	sub    $0x8,%esp
+ 804836c:	83 e4 f0             	and    $0xfffffff0,%esp
+ 804836f:	b8 00 00 00 00       	mov    $0x0,%eax
+ 8048374:	29 c4                	sub    %eax,%esp
+	int ret = 0;
+ 8048376:	c7 45 fc 00 00 00 00 	movl   $0x0,0xfffffffc(%ebp)
+	printf( "hello, Cruel World! \n" );
+ 804837d:	83 ec 0c             	sub    $0xc,%esp
+ 8048380:	68 e6 84 04 08       	push   $0x80484e6
+ 8048385:	e8 de fe ff ff       	call   8048268 <_init+0x38>
+ 804838a:	83 c4 10             	add    $0x10,%esp
+
+	ret = add( 1, 2 );
+ 804838d:	83 ec 08             	sub    $0x8,%esp
+ 8048390:	6a 02                	push   $0x2
+ 8048392:	6a 01                	push   $0x1
+ 8048394:	e8 8f ff ff ff       	call   8048328 <add>
+ 8048399:	83 c4 10             	add    $0x10,%esp
+ 804839c:	89 45 fc             	mov    %eax,0xfffffffc(%ebp)
+	printf( "ret = add(1, 2) = %d \n", ret );
+ 804839f:	83 ec 08             	sub    $0x8,%esp
+ 80483a2:	ff 75 fc             	pushl  0xfffffffc(%ebp)
+ 80483a5:	68 fc 84 04 08       	push   $0x80484fc
+ 80483aa:	e8 b9 fe ff ff       	call   8048268 <_init+0x38>
+ 80483af:	83 c4 10             	add    $0x10,%esp
+
+	ret = sub( 1, 2 );
+ 80483b2:	83 ec 08             	sub    $0x8,%esp
+ 80483b5:	6a 02                	push   $0x2
+ 80483b7:	6a 01                	push   $0x1
+ 80483b9:	e8 88 ff ff ff       	call   8048346 <sub>
+ 80483be:	83 c4 10             	add    $0x10,%esp
+ 80483c1:	89 45 fc             	mov    %eax,0xfffffffc(%ebp)
+	printf( "ret = sub(1, 2) = %d \n", ret );
+ 80483c4:	83 ec 08             	sub    $0x8,%esp
+ 80483c7:	ff 75 fc             	pushl  0xfffffffc(%ebp)
+ 80483ca:	68 13 85 04 08       	push   $0x8048513
+ 80483cf:	e8 94 fe ff ff       	call   8048268 <_init+0x38>
+ 80483d4:	83 c4 10             	add    $0x10,%esp
+
+//	return 0;
+
+	f = add;
+ 80483d7:	c7 05 5c 95 04 08 28 	movl   $0x8048328,0x804955c
+ 80483de:	83 04 08 
+	//f0 = add;
+	printf( "f = add = 0x%x \n", f );
+ 80483e1:	83 ec 08             	sub    $0x8,%esp
+ 80483e4:	ff 35 5c 95 04 08    	pushl  0x804955c
+ 80483ea:	68 2a 85 04 08       	push   $0x804852a
+ 80483ef:	e8 74 fe ff ff       	call   8048268 <_init+0x38>
+ 80483f4:	83 c4 10             	add    $0x10,%esp
+	printf( "->> add = %d \n", (*f)(100,200) );
+ 80483f7:	83 ec 08             	sub    $0x8,%esp
+ 80483fa:	68 c8 00 00 00       	push   $0xc8
+ 80483ff:	6a 64                	push   $0x64
+ 8048401:	a1 5c 95 04 08       	mov    0x804955c,%eax
+ 8048406:	ff d0                	call   *%eax
+ 8048408:	83 c4 08             	add    $0x8,%esp
+ 804840b:	50                   	push   %eax
+ 804840c:	68 3b 85 04 08       	push   $0x804853b
+ 8048411:	e8 52 fe ff ff       	call   8048268 <_init+0x38>
+ 8048416:	83 c4 10             	add    $0x10,%esp
+	return 0;
+ 8048419:	b8 00 00 00 00       	mov    $0x0,%eax
+	//printf( "2 ->> f0 add = %d \n", (*f0)(100,200) );
+
+	f = sub;
+	printf( "f = sub = 0x%x \n", f );
+	printf( "sub = %d \n", f(100,200) );
+
+//	return 0;
+
+	fa[0] = add;
+	printf( "fa[0](100,200) add = %d \n", fa[0](100,200) );
+	fa[1] = sub;
+	printf( "fa[1](100,200) sub = %d \n", fa[1](100,200) );
+
+	printf( "fa[0] addr = 0x%x \n", fa[0] );
+	printf( "fa[1] addr = 0x%x \n", fa[1] );
+
+	return 0;
+}
+ 804841e:	c9                   	leave  
+ 804841f:	c3                   	ret    
+
+08048420 <__libc_csu_init>:
+ 8048420:	55                   	push   %ebp
+ 8048421:	89 e5                	mov    %esp,%ebp
+ 8048423:	56                   	push   %esi
+ 8048424:	53                   	push   %ebx
+ 8048425:	e8 06 fe ff ff       	call   8048230 <_init>
+ 804842a:	b8 50 95 04 08       	mov    $0x8049550,%eax
+ 804842f:	2d 50 95 04 08       	sub    $0x8049550,%eax
+ 8048434:	c1 f8 02             	sar    $0x2,%eax
+ 8048437:	31 db                	xor    %ebx,%ebx
+ 8048439:	39 c3                	cmp    %eax,%ebx
+ 804843b:	73 0f                	jae    804844c <__libc_csu_init+0x2c>
+ 804843d:	89 c6                	mov    %eax,%esi
+ 804843f:	90                   	nop    
+ 8048440:	ff 14 9d 50 95 04 08 	call   *0x8049550(,%ebx,4)
+ 8048447:	43                   	inc    %ebx
+ 8048448:	39 f3                	cmp    %esi,%ebx
+ 804844a:	72 f4                	jb     8048440 <__libc_csu_init+0x20>
+ 804844c:	5b                   	pop    %ebx
+ 804844d:	5e                   	pop    %esi
+ 804844e:	c9                   	leave  
+ 804844f:	c3                   	ret    
+
+08048450 <__libc_csu_fini>:
+ 8048450:	55                   	push   %ebp
+ 8048451:	89 e5                	mov    %esp,%ebp
+ 8048453:	53                   	push   %ebx
+ 8048454:	50                   	push   %eax
+ 8048455:	b8 50 95 04 08       	mov    $0x8049550,%eax
+ 804845a:	2d 50 95 04 08       	sub    $0x8049550,%eax
+ 804845f:	c1 f8 02             	sar    $0x2,%eax
+ 8048462:	85 c0                	test   %eax,%eax
+ 8048464:	8d 58 ff             	lea    0xffffffff(%eax),%ebx
+ 8048467:	75 0b                	jne    8048474 <__libc_csu_fini+0x24>
+ 8048469:	8b 5d fc             	mov    0xfffffffc(%ebp),%ebx
+ 804846c:	c9                   	leave  
+ 804846d:	e9 36 00 00 00       	jmp    80484a8 <_fini>
+ 8048472:	89 f6                	mov    %esi,%esi
+ 8048474:	ff 14 9d 50 95 04 08 	call   *0x8049550(,%ebx,4)
+ 804847b:	89 da                	mov    %ebx,%edx
+ 804847d:	4b                   	dec    %ebx
+ 804847e:	85 d2                	test   %edx,%edx
+ 8048480:	75 f2                	jne    8048474 <__libc_csu_fini+0x24>
+ 8048482:	eb e5                	jmp    8048469 <__libc_csu_fini+0x19>
+
+08048484 <__do_global_ctors_aux>:
+ 8048484:	55                   	push   %ebp
+ 8048485:	89 e5                	mov    %esp,%ebp
+ 8048487:	53                   	push   %ebx
+ 8048488:	52                   	push   %edx
+ 8048489:	a1 2c 96 04 08       	mov    0x804962c,%eax
+ 804848e:	83 f8 ff             	cmp    $0xffffffff,%eax
+ 8048491:	bb 2c 96 04 08       	mov    $0x804962c,%ebx
+ 8048496:	74 0c                	je     80484a4 <__do_global_ctors_aux+0x20>
+ 8048498:	83 eb 04             	sub    $0x4,%ebx
+ 804849b:	ff d0                	call   *%eax
+ 804849d:	8b 03                	mov    (%ebx),%eax
+ 804849f:	83 f8 ff             	cmp    $0xffffffff,%eax
+ 80484a2:	75 f4                	jne    8048498 <__do_global_ctors_aux+0x14>
+ 80484a4:	58                   	pop    %eax
+ 80484a5:	5b                   	pop    %ebx
+ 80484a6:	c9                   	leave  
+ 80484a7:	c3                   	ret    
+
+hello:     file format elf32-i386
+
+Disassembly of section .rodata:
+
+080484c4 <_fp_hw>:
+ 80484c4:	03 00 00 00                                         ....
+
+080484c8 <_IO_stdin_used>:
+ 80484c8:	01 00 02 00 61 64 64 20 63 61 6c 6c 65 64 21 0a     ....add called!.
+ 80484d8:	00 73 75 62 20 63 61 6c 6c 65 64 21 0a 00 68 65     .sub called!..he
+ 80484e8:	6c 6c 6f 2c 20 43 72 75 65 6c 20 57 6f 72 6c 64     llo, Cruel World
+ 80484f8:	21 20 0a 00 72 65 74 20 3d 20 61 64 64 28 31 2c     ! ..ret = add(1,
+ 8048508:	20 32 29 20 3d 20 25 64 20 0a 00 72 65 74 20 3d      2) = %d ..ret =
+ 8048518:	20 73 75 62 28 31 2c 20 32 29 20 3d 20 25 64 20      sub(1, 2) = %d 
+ 8048528:	0a 00 66 20 3d 20 61 64 64 20 3d 20 30 78 25 78     ..f = add = 0x%x
+ 8048538:	20 0a 00 2d 3e 3e 20 61 64 64 20 3d 20 25 64 20      ..->> add = %d 
+ 8048548:	0a 00                                               ..
+
+hello:     file format elf32-i386
+
+Disassembly of section .data:
+
+08049550 <__data_start>:
+ 8049550:	00 00                	add    %al,(%eax)
+	...
+
+08049554 <__dso_handle>:
+ 8049554:	00 00 00 00                                         ....
+
+08049558 <p.0>:
+ 8049558:	38 96 04 08                                         8...
+
+0804955c <f>:
+ 804955c:	00 00 00 00                                         ....
+
+08049560 <f0>:
+ 8049560:	00 00 00 00                                         ....

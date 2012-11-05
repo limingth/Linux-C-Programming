@@ -1,0 +1,8 @@
+mainmenu_name 'Sitsang Board Program Configuration'
+mainmenu_option next_comment
+comment 'Target Platform Selection'
+comment 'Choose a Vendor/Product combination.'
+choice 'Vendor/Product [Intel/i386 | ARM/Intel XScale] ' "1 CONFIG_DEFAULTS_INTEL_I386 \
+2 CONFIG_DEFAULTS_ARM_INTEL_XSCALE\
+" 
+endmenu

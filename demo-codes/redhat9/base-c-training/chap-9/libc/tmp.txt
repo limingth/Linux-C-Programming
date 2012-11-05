@@ -1,0 +1,3 @@
+hello, Cruel World! 
+to stdout: 0 
+test sprintf: 2 

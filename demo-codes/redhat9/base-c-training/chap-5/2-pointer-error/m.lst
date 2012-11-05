@@ -1,0 +1,418 @@
+
+hello:     file format elf32-i386
+
+Disassembly of section .text:
+
+080482ac <_start>:
+ 80482ac:	31 ed                	xor    %ebp,%ebp
+ 80482ae:	5e                   	pop    %esi
+ 80482af:	89 e1                	mov    %esp,%ecx
+ 80482b1:	83 e4 f0             	and    $0xfffffff0,%esp
+ 80482b4:	50                   	push   %eax
+ 80482b5:	54                   	push   %esp
+ 80482b6:	52                   	push   %edx
+ 80482b7:	68 54 85 04 08       	push   $0x8048554
+ 80482bc:	68 24 85 04 08       	push   $0x8048524
+ 80482c1:	51                   	push   %ecx
+ 80482c2:	56                   	push   %esi
+ 80482c3:	68 f5 84 04 08       	push   $0x80484f5
+ 80482c8:	e8 af ff ff ff       	call   804827c <_init+0x28>
+ 80482cd:	f4                   	hlt    
+ 80482ce:	90                   	nop    
+ 80482cf:	90                   	nop    
+
+080482d0 <call_gmon_start>:
+ 80482d0:	55                   	push   %ebp
+ 80482d1:	89 e5                	mov    %esp,%ebp
+ 80482d3:	53                   	push   %ebx
+ 80482d4:	50                   	push   %eax
+ 80482d5:	e8 00 00 00 00       	call   80482da <call_gmon_start+0xa>
+ 80482da:	5b                   	pop    %ebx
+ 80482db:	81 c3 82 15 40 00    	add    $0x401582,%ebx
+ 80482e1:	8b 83 18 00 00 00    	mov    0x18(%ebx),%eax
+ 80482e7:	85 c0                	test   %eax,%eax
+ 80482e9:	74 02                	je     80482ed <call_gmon_start+0x1d>
+ 80482eb:	ff d0                	call   *%eax
+ 80482ed:	8b 5d fc             	mov    0xfffffffc(%ebp),%ebx
+ 80482f0:	c9                   	leave  
+ 80482f1:	c3                   	ret    
+ 80482f2:	90                   	nop    
+ 80482f3:	90                   	nop    
+
+080482f4 <__do_global_dtors_aux>:
+ 80482f4:	55                   	push   %ebp
+ 80482f5:	89 e5                	mov    %esp,%ebp
+ 80482f7:	83 ec 08             	sub    $0x8,%esp
+ 80482fa:	80 3d 78 98 44 08 00 	cmpb   $0x0,0x8449878
+ 8048301:	75 29                	jne    804832c <__do_global_dtors_aux+0x38>
+ 8048303:	a1 48 97 04 08       	mov    0x8049748,%eax
+ 8048308:	8b 10                	mov    (%eax),%edx
+ 804830a:	85 d2                	test   %edx,%edx
+ 804830c:	74 17                	je     8048325 <__do_global_dtors_aux+0x31>
+ 804830e:	89 f6                	mov    %esi,%esi
+ 8048310:	83 c0 04             	add    $0x4,%eax
+ 8048313:	a3 48 97 04 08       	mov    %eax,0x8049748
+ 8048318:	ff d2                	call   *%edx
+ 804831a:	a1 48 97 04 08       	mov    0x8049748,%eax
+ 804831f:	8b 10                	mov    (%eax),%edx
+ 8048321:	85 d2                	test   %edx,%edx
+ 8048323:	75 eb                	jne    8048310 <__do_global_dtors_aux+0x1c>
+ 8048325:	c6 05 78 98 44 08 01 	movb   $0x1,0x8449878
+ 804832c:	c9                   	leave  
+ 804832d:	c3                   	ret    
+ 804832e:	89 f6                	mov    %esi,%esi
+
+08048330 <frame_dummy>:
+ 8048330:	55                   	push   %ebp
+ 8048331:	89 e5                	mov    %esp,%ebp
+ 8048333:	83 ec 08             	sub    $0x8,%esp
+ 8048336:	a1 58 98 44 08       	mov    0x8449858,%eax
+ 804833b:	85 c0                	test   %eax,%eax
+ 804833d:	74 19                	je     8048358 <frame_dummy+0x28>
+ 804833f:	b8 00 00 00 00       	mov    $0x0,%eax
+ 8048344:	85 c0                	test   %eax,%eax
+ 8048346:	74 10                	je     8048358 <frame_dummy+0x28>
+ 8048348:	83 ec 0c             	sub    $0xc,%esp
+ 804834b:	68 58 98 44 08       	push   $0x8449858
+ 8048350:	e8 ab 7c fb f7       	call   0 <_init-0x8048254>
+ 8048355:	83 c4 10             	add    $0x10,%esp
+ 8048358:	c9                   	leave  
+ 8048359:	c3                   	ret    
+ 804835a:	90                   	nop    
+ 804835b:	90                   	nop    
+
+0804835c <test_int>:
+
+int a;
+
+int test_int( void )
+{
+ 804835c:	55                   	push   %ebp
+ 804835d:	89 e5                	mov    %esp,%ebp
+ 804835f:	83 ec 08             	sub    $0x8,%esp
+	printf( "<test_int> 1 \n" );
+ 8048362:	83 ec 0c             	sub    $0xc,%esp
+ 8048365:	68 d0 85 04 08       	push   $0x80485d0
+ 804836a:	e8 1d ff ff ff       	call   804828c <_init+0x38>
+ 804836f:	83 c4 10             	add    $0x10,%esp
+
+	//pint = (int *)0x588;
+	pint = &a;
+ 8048372:	c7 05 8c 98 44 08 88 	movl   $0x8449888,0x844988c
+ 8048379:	98 44 08 
+	printf( "<test_int> 2 \n" );
+ 804837c:	83 ec 0c             	sub    $0xc,%esp
+ 804837f:	68 df 85 04 08       	push   $0x80485df
+ 8048384:	e8 03 ff ff ff       	call   804828c <_init+0x38>
+ 8048389:	83 c4 10             	add    $0x10,%esp
+
+	*pint = 0x12;
+ 804838c:	a1 8c 98 44 08       	mov    0x844988c,%eax
+ 8048391:	c7 00 12 00 00 00    	movl   $0x12,(%eax)
+	printf( "<test_int> 3 %d \n", *pint );
+ 8048397:	83 ec 08             	sub    $0x8,%esp
+ 804839a:	a1 8c 98 44 08       	mov    0x844988c,%eax
+ 804839f:	ff 30                	pushl  (%eax)
+ 80483a1:	68 ee 85 04 08       	push   $0x80485ee
+ 80483a6:	e8 e1 fe ff ff       	call   804828c <_init+0x38>
+ 80483ab:	83 c4 10             	add    $0x10,%esp
+
+	printf( "<test_int> 4 *pint = %d \n", *pint );
+ 80483ae:	83 ec 08             	sub    $0x8,%esp
+ 80483b1:	a1 8c 98 44 08       	mov    0x844988c,%eax
+ 80483b6:	ff 30                	pushl  (%eax)
+ 80483b8:	68 00 86 04 08       	push   $0x8048600
+ 80483bd:	e8 ca fe ff ff       	call   804828c <_init+0x38>
+ 80483c2:	83 c4 10             	add    $0x10,%esp
+	printf( "<test_int> 5 pint = 0x%x \n", pint );
+ 80483c5:	83 ec 08             	sub    $0x8,%esp
+ 80483c8:	ff 35 8c 98 44 08    	pushl  0x844988c
+ 80483ce:	68 1a 86 04 08       	push   $0x804861a
+ 80483d3:	e8 b4 fe ff ff       	call   804828c <_init+0x38>
+ 80483d8:	83 c4 10             	add    $0x10,%esp
+}
+ 80483db:	c9                   	leave  
+ 80483dc:	c3                   	ret    
+
+080483dd <test_str>:
+
+char str[10];
+char * pstr = "abcdabcdabcd";
+
+int test_str( void )
+{
+ 80483dd:	55                   	push   %ebp
+ 80483de:	89 e5                	mov    %esp,%ebp
+ 80483e0:	83 ec 08             	sub    $0x8,%esp
+	printf( "<test_str> 1 \n" );
+ 80483e3:	83 ec 0c             	sub    $0xc,%esp
+ 80483e6:	68 42 86 04 08       	push   $0x8048642
+ 80483eb:	e8 9c fe ff ff       	call   804828c <_init+0x38>
+ 80483f0:	83 c4 10             	add    $0x10,%esp
+	//pstr = "abcd";
+	printf( "<test_str> 2 \n" );
+ 80483f3:	83 ec 0c             	sub    $0xc,%esp
+ 80483f6:	68 51 86 04 08       	push   $0x8048651
+ 80483fb:	e8 8c fe ff ff       	call   804828c <_init+0x38>
+ 8048400:	83 c4 10             	add    $0x10,%esp
+
+	strcpy( str, "ABCD" );
+ 8048403:	83 ec 08             	sub    $0x8,%esp
+ 8048406:	68 60 86 04 08       	push   $0x8048660
+ 804840b:	68 7c 98 44 08       	push   $0x844987c
+ 8048410:	e8 87 fe ff ff       	call   804829c <_init+0x48>
+ 8048415:	83 c4 10             	add    $0x10,%esp
+	printf( "<test_str> 3 \n" );
+ 8048418:	83 ec 0c             	sub    $0xc,%esp
+ 804841b:	68 65 86 04 08       	push   $0x8048665
+ 8048420:	e8 67 fe ff ff       	call   804828c <_init+0x38>
+ 8048425:	83 c4 10             	add    $0x10,%esp
+
+	//str = "1234";
+	//pstr = str;
+	printf( "<test_str> 4 \n" );
+ 8048428:	83 ec 0c             	sub    $0xc,%esp
+ 804842b:	68 74 86 04 08       	push   $0x8048674
+ 8048430:	e8 57 fe ff ff       	call   804828c <_init+0x38>
+ 8048435:	83 c4 10             	add    $0x10,%esp
+	
+	strcpy( pstr, "AB" );
+ 8048438:	83 ec 08             	sub    $0x8,%esp
+ 804843b:	68 83 86 04 08       	push   $0x8048683
+ 8048440:	ff 35 60 97 04 08    	pushl  0x8049760
+ 8048446:	e8 51 fe ff ff       	call   804829c <_init+0x48>
+ 804844b:	83 c4 10             	add    $0x10,%esp
+	printf( "<test_str> 5 \n" );
+ 804844e:	83 ec 0c             	sub    $0xc,%esp
+ 8048451:	68 86 86 04 08       	push   $0x8048686
+ 8048456:	e8 31 fe ff ff       	call   804828c <_init+0x38>
+ 804845b:	83 c4 10             	add    $0x10,%esp
+}
+ 804845e:	c9                   	leave  
+ 804845f:	c3                   	ret    
+
+08048460 <test_struct>:
+
+typedef struct student 
+{
+	//char name[32];
+	char * name;
+	int age;
+} student_t;
+
+int b[1024][1024] = { 1 };
+
+void test_struct( void )
+{
+ 8048460:	55                   	push   %ebp
+ 8048461:	89 e5                	mov    %esp,%ebp
+ 8048463:	83 ec 18             	sub    $0x18,%esp
+	int i;
+	student_t  zhang;
+
+
+	printf( "0 zhang's age is %d \n", zhang.age );
+ 8048466:	83 ec 08             	sub    $0x8,%esp
+ 8048469:	ff 75 f4             	pushl  0xfffffff4(%ebp)
+ 804846c:	68 95 86 04 08       	push   $0x8048695
+ 8048471:	e8 16 fe ff ff       	call   804828c <_init+0x38>
+ 8048476:	83 c4 10             	add    $0x10,%esp
+	zhang.age = 15;
+ 8048479:	c7 45 f4 0f 00 00 00 	movl   $0xf,0xfffffff4(%ebp)
+	printf( "1 zhang's age is %d \n", zhang.age );
+ 8048480:	83 ec 08             	sub    $0x8,%esp
+ 8048483:	ff 75 f4             	pushl  0xfffffff4(%ebp)
+ 8048486:	68 ab 86 04 08       	push   $0x80486ab
+ 804848b:	e8 fc fd ff ff       	call   804828c <_init+0x38>
+ 8048490:	83 c4 10             	add    $0x10,%esp
+
+	strcpy( zhang.name, "zhangsan" );
+ 8048493:	83 ec 08             	sub    $0x8,%esp
+ 8048496:	68 c1 86 04 08       	push   $0x80486c1
+ 804849b:	ff 75 f0             	pushl  0xfffffff0(%ebp)
+ 804849e:	e8 f9 fd ff ff       	call   804829c <_init+0x48>
+ 80484a3:	83 c4 10             	add    $0x10,%esp
+	printf( "2 zhang's name copy ok! \n" );
+ 80484a6:	83 ec 0c             	sub    $0xc,%esp
+ 80484a9:	68 ca 86 04 08       	push   $0x80486ca
+ 80484ae:	e8 d9 fd ff ff       	call   804828c <_init+0x38>
+ 80484b3:	83 c4 10             	add    $0x10,%esp
+	printf( "3 zhang's name is %s \n", zhang.name );
+ 80484b6:	83 ec 08             	sub    $0x8,%esp
+ 80484b9:	ff 75 f0             	pushl  0xfffffff0(%ebp)
+ 80484bc:	68 e4 86 04 08       	push   $0x80486e4
+ 80484c1:	e8 c6 fd ff ff       	call   804828c <_init+0x38>
+ 80484c6:	83 c4 10             	add    $0x10,%esp
+
+	strcpy( pstr, zhang.name );
+ 80484c9:	83 ec 08             	sub    $0x8,%esp
+ 80484cc:	ff 75 f0             	pushl  0xfffffff0(%ebp)
+ 80484cf:	ff 35 60 97 04 08    	pushl  0x8049760
+ 80484d5:	e8 c2 fd ff ff       	call   804829c <_init+0x48>
+ 80484da:	83 c4 10             	add    $0x10,%esp
+	printf( "4 zhang's name is %s \n", pstr );
+ 80484dd:	83 ec 08             	sub    $0x8,%esp
+ 80484e0:	ff 35 60 97 04 08    	pushl  0x8049760
+ 80484e6:	68 fb 86 04 08       	push   $0x80486fb
+ 80484eb:	e8 9c fd ff ff       	call   804828c <_init+0x38>
+ 80484f0:	83 c4 10             	add    $0x10,%esp
+	
+	return ;
+
+	for( i=0; i<10; i++)
+		printf( "0x%x : pstr[%d] = %c 0x%x \n", pstr+i, i, *(pstr+i), *(pstr+i) );
+
+	return;
+}
+ 80484f3:	c9                   	leave  
+ 80484f4:	c3                   	ret    
+
+080484f5 <main>:
+
+int main( int argc, char * argv[] )
+{
+ 80484f5:	55                   	push   %ebp
+ 80484f6:	89 e5                	mov    %esp,%ebp
+ 80484f8:	83 ec 08             	sub    $0x8,%esp
+ 80484fb:	83 e4 f0             	and    $0xfffffff0,%esp
+ 80484fe:	b8 00 00 00 00       	mov    $0x0,%eax
+ 8048503:	29 c4                	sub    %eax,%esp
+//	test_int();
+
+//	test_str();
+
+	test_struct();
+ 8048505:	e8 56 ff ff ff       	call   8048460 <test_struct>
+
+	printf( "Hello, Cruel World! \n" );
+ 804850a:	83 ec 0c             	sub    $0xc,%esp
+ 804850d:	68 12 87 04 08       	push   $0x8048712
+ 8048512:	e8 75 fd ff ff       	call   804828c <_init+0x38>
+ 8048517:	83 c4 10             	add    $0x10,%esp
+
+	return 0;
+ 804851a:	b8 00 00 00 00       	mov    $0x0,%eax
+}
+ 804851f:	c9                   	leave  
+ 8048520:	c3                   	ret    
+ 8048521:	90                   	nop    
+ 8048522:	90                   	nop    
+ 8048523:	90                   	nop    
+
+08048524 <__libc_csu_init>:
+ 8048524:	55                   	push   %ebp
+ 8048525:	89 e5                	mov    %esp,%ebp
+ 8048527:	56                   	push   %esi
+ 8048528:	53                   	push   %ebx
+ 8048529:	e8 26 fd ff ff       	call   8048254 <_init>
+ 804852e:	b8 2c 97 04 08       	mov    $0x804972c,%eax
+ 8048533:	2d 2c 97 04 08       	sub    $0x804972c,%eax
+ 8048538:	c1 f8 02             	sar    $0x2,%eax
+ 804853b:	31 db                	xor    %ebx,%ebx
+ 804853d:	39 c3                	cmp    %eax,%ebx
+ 804853f:	73 0f                	jae    8048550 <__libc_csu_init+0x2c>
+ 8048541:	89 c6                	mov    %eax,%esi
+ 8048543:	90                   	nop    
+ 8048544:	ff 14 9d 2c 97 04 08 	call   *0x804972c(,%ebx,4)
+ 804854b:	43                   	inc    %ebx
+ 804854c:	39 f3                	cmp    %esi,%ebx
+ 804854e:	72 f4                	jb     8048544 <__libc_csu_init+0x20>
+ 8048550:	5b                   	pop    %ebx
+ 8048551:	5e                   	pop    %esi
+ 8048552:	c9                   	leave  
+ 8048553:	c3                   	ret    
+
+08048554 <__libc_csu_fini>:
+ 8048554:	55                   	push   %ebp
+ 8048555:	89 e5                	mov    %esp,%ebp
+ 8048557:	53                   	push   %ebx
+ 8048558:	50                   	push   %eax
+ 8048559:	b8 2c 97 04 08       	mov    $0x804972c,%eax
+ 804855e:	2d 2c 97 04 08       	sub    $0x804972c,%eax
+ 8048563:	c1 f8 02             	sar    $0x2,%eax
+ 8048566:	85 c0                	test   %eax,%eax
+ 8048568:	8d 58 ff             	lea    0xffffffff(%eax),%ebx
+ 804856b:	75 0b                	jne    8048578 <__libc_csu_fini+0x24>
+ 804856d:	8b 5d fc             	mov    0xfffffffc(%ebp),%ebx
+ 8048570:	c9                   	leave  
+ 8048571:	e9 36 00 00 00       	jmp    80485ac <_fini>
+ 8048576:	89 f6                	mov    %esi,%esi
+ 8048578:	ff 14 9d 2c 97 04 08 	call   *0x804972c(,%ebx,4)
+ 804857f:	89 da                	mov    %ebx,%edx
+ 8048581:	4b                   	dec    %ebx
+ 8048582:	85 d2                	test   %edx,%edx
+ 8048584:	75 f2                	jne    8048578 <__libc_csu_fini+0x24>
+ 8048586:	eb e5                	jmp    804856d <__libc_csu_fini+0x19>
+
+08048588 <__do_global_ctors_aux>:
+ 8048588:	55                   	push   %ebp
+ 8048589:	89 e5                	mov    %esp,%ebp
+ 804858b:	53                   	push   %ebx
+ 804858c:	52                   	push   %edx
+ 804858d:	a1 48 98 44 08       	mov    0x8449848,%eax
+ 8048592:	83 f8 ff             	cmp    $0xffffffff,%eax
+ 8048595:	bb 48 98 44 08       	mov    $0x8449848,%ebx
+ 804859a:	74 0c                	je     80485a8 <__do_global_ctors_aux+0x20>
+ 804859c:	83 eb 04             	sub    $0x4,%ebx
+ 804859f:	ff d0                	call   *%eax
+ 80485a1:	8b 03                	mov    (%ebx),%eax
+ 80485a3:	83 f8 ff             	cmp    $0xffffffff,%eax
+ 80485a6:	75 f4                	jne    804859c <__do_global_ctors_aux+0x14>
+ 80485a8:	58                   	pop    %eax
+ 80485a9:	5b                   	pop    %ebx
+ 80485aa:	c9                   	leave  
+ 80485ab:	c3                   	ret    
+
+hello:     file format elf32-i386
+
+Disassembly of section .rodata:
+
+080485c8 <_fp_hw>:
+ 80485c8:	03 00 00 00                                         ....
+
+080485cc <_IO_stdin_used>:
+ 80485cc:	01 00 02 00 3c 74 65 73 74 5f 69 6e 74 3e 20 31     ....<test_int> 1
+ 80485dc:	20 0a 00 3c 74 65 73 74 5f 69 6e 74 3e 20 32 20      ..<test_int> 2 
+ 80485ec:	0a 00 3c 74 65 73 74 5f 69 6e 74 3e 20 33 20 25     ..<test_int> 3 %
+ 80485fc:	64 20 0a 00 3c 74 65 73 74 5f 69 6e 74 3e 20 34     d ..<test_int> 4
+ 804860c:	20 2a 70 69 6e 74 20 3d 20 25 64 20 0a 00 3c 74      *pint = %d ..<t
+ 804861c:	65 73 74 5f 69 6e 74 3e 20 35 20 70 69 6e 74 20     est_int> 5 pint 
+ 804862c:	3d 20 30 78 25 78 20 0a 00 61 62 63 64 61 62 63     = 0x%x ..abcdabc
+ 804863c:	64 61 62 63 64 00 3c 74 65 73 74 5f 73 74 72 3e     dabcd.<test_str>
+ 804864c:	20 31 20 0a 00 3c 74 65 73 74 5f 73 74 72 3e 20      1 ..<test_str> 
+ 804865c:	32 20 0a 00 41 42 43 44 00 3c 74 65 73 74 5f 73     2 ..ABCD.<test_s
+ 804866c:	74 72 3e 20 33 20 0a 00 3c 74 65 73 74 5f 73 74     tr> 3 ..<test_st
+ 804867c:	72 3e 20 34 20 0a 00 41 42 00 3c 74 65 73 74 5f     r> 4 ..AB.<test_
+ 804868c:	73 74 72 3e 20 35 20 0a 00 30 20 7a 68 61 6e 67     str> 5 ..0 zhang
+ 804869c:	27 73 20 61 67 65 20 69 73 20 25 64 20 0a 00 31     's age is %d ..1
+ 80486ac:	20 7a 68 61 6e 67 27 73 20 61 67 65 20 69 73 20      zhang's age is 
+ 80486bc:	25 64 20 0a 00 7a 68 61 6e 67 73 61 6e 00 32 20     %d ..zhangsan.2 
+ 80486cc:	7a 68 61 6e 67 27 73 20 6e 61 6d 65 20 63 6f 70     zhang's name cop
+ 80486dc:	79 20 6f 6b 21 20 0a 00 33 20 7a 68 61 6e 67 27     y ok! ..3 zhang'
+ 80486ec:	73 20 6e 61 6d 65 20 69 73 20 25 73 20 0a 00 34     s name is %s ..4
+ 80486fc:	20 7a 68 61 6e 67 27 73 20 6e 61 6d 65 20 69 73      zhang's name is
+ 804870c:	20 25 73 20 0a 00 48 65 6c 6c 6f 2c 20 43 72 75      %s ..Hello, Cru
+ 804871c:	65 6c 20 57 6f 72 6c 64 21 20 0a 00                 el World! ..
+
+hello:     file format elf32-i386
+
+Disassembly of section .data:
+
+08049740 <__data_start>:
+ 8049740:	00 00                	add    %al,(%eax)
+	...
+
+08049744 <__dso_handle>:
+ 8049744:	00 00 00 00                                         ....
+
+08049748 <p.0>:
+ 8049748:	54 98 44 08 00 00 00 00 00 00 00 00 00 00 00 00     T.D.............
+	...
+
+08049760 <pstr>:
+ 8049760:	35 86 04 08 00 00 00 00 00 00 00 00 00 00 00 00     5...............
+	...
+
+08049780 <b>:
+ 8049780:	01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
+	...

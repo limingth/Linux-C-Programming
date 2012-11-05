@@ -1,0 +1,15 @@
+
+this program is to caculate how many N in number from BEGIN to END
+
+to compile this project:
+	make 
+
+to run this program:	
+	./cal BEGIN END N
+	like
+	./cal9 1 100 9
+
+Bugs report:   
+	li ming <bugs@akaedu.org>
+
+

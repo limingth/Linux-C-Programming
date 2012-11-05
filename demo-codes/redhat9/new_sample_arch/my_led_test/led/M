@@ -1,0 +1,8 @@
+
+all:
+	gcc -c led_api.c
+	gcc -c led_driver.c
+	ld -r -o led.o led_api.o led_driver.o
+
+clean:
+	rm -rf *.o

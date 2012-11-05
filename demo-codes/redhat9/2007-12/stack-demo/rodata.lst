@@ -1,0 +1,11 @@
+
+demo:     file format elf32-i386
+
+Disassembly of section .rodata:
+
+0804844c <_fp_hw>:
+ 804844c:	03 00 00 00                                         ....
+
+08048450 <_IO_stdin_used>:
+ 8048450:	01 00 02 00 78 20 3d 20 25 64 20 0a 00 79 20 3d     ....x = %d ..y =
+ 8048460:	20 25 64 20 0a 00                                    %d ..

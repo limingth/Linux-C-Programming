@@ -1,0 +1,58 @@
+
+main.o:     file format elf32-i386
+
+Disassembly of section .text:
+
+00000000 <add>:
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	8b 45 0c             	mov    0xc(%ebp),%eax
+   6:	03 45 08             	add    0x8(%ebp),%eax
+   9:	c9                   	leave  
+   a:	c3                   	ret    
+
+0000000b <sub>:
+   b:	55                   	push   %ebp
+   c:	89 e5                	mov    %esp,%ebp
+   e:	8b 55 0c             	mov    0xc(%ebp),%edx
+  11:	8b 45 08             	mov    0x8(%ebp),%eax
+  14:	29 d0                	sub    %edx,%eax
+  16:	c9                   	leave  
+  17:	c3                   	ret    
+
+00000018 <main>:
+  18:	55                   	push   %ebp
+  19:	89 e5                	mov    %esp,%ebp
+  1b:	83 ec 08             	sub    $0x8,%esp
+  1e:	83 e4 f0             	and    $0xfffffff0,%esp
+  21:	b8 00 00 00 00       	mov    $0x0,%eax
+  26:	29 c4                	sub    %eax,%esp
+  28:	83 ec 0c             	sub    $0xc,%esp
+  2b:	68 00 00 00 00       	push   $0x0
+  30:	e8 fc ff ff ff       	call   31 <main+0x19>
+  35:	83 c4 10             	add    $0x10,%esp
+  38:	83 ec 08             	sub    $0x8,%esp
+  3b:	68 c8 00 00 00       	push   $0xc8
+  40:	6a 64                	push   $0x64
+  42:	e8 fc ff ff ff       	call   43 <main+0x2b>
+  47:	83 c4 10             	add    $0x10,%esp
+  4a:	89 45 fc             	mov    %eax,0xfffffffc(%ebp)
+  4d:	83 ec 08             	sub    $0x8,%esp
+  50:	ff 75 fc             	pushl  0xfffffffc(%ebp)
+  53:	68 16 00 00 00       	push   $0x16
+  58:	e8 fc ff ff ff       	call   59 <main+0x41>
+  5d:	83 c4 10             	add    $0x10,%esp
+  60:	83 ec 08             	sub    $0x8,%esp
+  63:	68 c8 00 00 00       	push   $0xc8
+  68:	6a 64                	push   $0x64
+  6a:	e8 fc ff ff ff       	call   6b <main+0x53>
+  6f:	83 c4 10             	add    $0x10,%esp
+  72:	89 45 fc             	mov    %eax,0xfffffffc(%ebp)
+  75:	83 ec 08             	sub    $0x8,%esp
+  78:	ff 75 fc             	pushl  0xfffffffc(%ebp)
+  7b:	68 21 00 00 00       	push   $0x21
+  80:	e8 fc ff ff ff       	call   81 <main+0x69>
+  85:	83 c4 10             	add    $0x10,%esp
+  88:	b8 00 00 00 00       	mov    $0x0,%eax
+  8d:	c9                   	leave  
+  8e:	c3                   	ret    

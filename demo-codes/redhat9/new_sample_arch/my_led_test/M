@@ -1,0 +1,15 @@
+
+all:
+	gcc -Iled -c main.c
+	make -C led
+	make -C beep 
+	gcc main.o led/led.o beep/beep.o -o myled
+
+once:
+	gcc -Iled main.c led/led_api.c led/led_driver.c -o myled
+
+clean:
+	-rm -f myled
+	make -C led clean
+	make -C beep clean
+	-rm -rf *.o

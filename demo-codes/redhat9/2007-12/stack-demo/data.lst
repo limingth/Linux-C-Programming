@@ -1,0 +1,14 @@
+
+demo:     file format elf32-i386
+
+Disassembly of section .data:
+
+0804946c <__data_start>:
+ 804946c:	00 00                	add    %al,(%eax)
+	...
+
+08049470 <__dso_handle>:
+ 8049470:	00 00 00 00                                         ....
+
+08049474 <p.0>:
+ 8049474:	4c 95 04 08                                         L...

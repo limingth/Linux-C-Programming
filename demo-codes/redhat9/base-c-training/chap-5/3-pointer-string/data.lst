@@ -1,0 +1,24 @@
+objdump -S -j .data hello
+
+hello:     file format elf32-i386
+
+Disassembly of section .data:
+
+080494f0 <__data_start>:
+ 80494f0:	00 00                	add    %al,(%eax)
+	...
+
+080494f4 <__dso_handle>:
+ 80494f4:	00 00 00 00                                         ....
+
+080494f8 <p.0>:
+ 80494f8:	e8 95 04 08                                         ....
+
+080494fc <str>:
+ 80494fc:	68 65 6c 6c 6f 2c 20 77 6f 72 6c 64 21 00 00 00     hello, world!...
+
+0804950c <pstr>:
+ 804950c:	88 84 04 08                                         ....
+
+08049510 <pstr2>:
+ 8049510:	00 00 00 00                                         ....

@@ -1,0 +1,46 @@
+
+main.o:     file format elf32-i386
+
+Disassembly of section .text:
+
+00000000 <main>:
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	83 ec 08             	sub    $0x8,%esp
+   6:	83 e4 f0             	and    $0xfffffff0,%esp
+   9:	b8 00 00 00 00       	mov    $0x0,%eax
+   e:	29 c4                	sub    %eax,%esp
+  10:	83 ec 0c             	sub    $0xc,%esp
+  13:	68 04 00 00 00       	push   $0x4
+  18:	e8 fc ff ff ff       	call   19 <main+0x19>
+  1d:	83 c4 10             	add    $0x10,%esp
+  20:	83 ec 08             	sub    $0x8,%esp
+  23:	68 c8 00 00 00       	push   $0xc8
+  28:	6a 64                	push   $0x64
+  2a:	e8 fc ff ff ff       	call   2b <main+0x2b>
+  2f:	83 c4 08             	add    $0x8,%esp
+  32:	50                   	push   %eax
+  33:	68 13 00 00 00       	push   $0x13
+  38:	e8 fc ff ff ff       	call   39 <main+0x39>
+  3d:	83 c4 10             	add    $0x10,%esp
+  40:	83 ec 08             	sub    $0x8,%esp
+  43:	68 c8 00 00 00       	push   $0xc8
+  48:	6a 64                	push   $0x64
+  4a:	e8 fc ff ff ff       	call   4b <main+0x4b>
+  4f:	83 c4 08             	add    $0x8,%esp
+  52:	50                   	push   %eax
+  53:	68 28 00 00 00       	push   $0x28
+  58:	e8 fc ff ff ff       	call   59 <main+0x59>
+  5d:	83 c4 10             	add    $0x10,%esp
+  60:	83 ec 08             	sub    $0x8,%esp
+  63:	68 c8 00 00 00       	push   $0xc8
+  68:	6a 64                	push   $0x64
+  6a:	e8 fc ff ff ff       	call   6b <main+0x6b>
+  6f:	83 c4 08             	add    $0x8,%esp
+  72:	50                   	push   %eax
+  73:	68 28 00 00 00       	push   $0x28
+  78:	e8 fc ff ff ff       	call   79 <main+0x79>
+  7d:	83 c4 10             	add    $0x10,%esp
+  80:	b8 00 00 00 00       	mov    $0x0,%eax
+  85:	c9                   	leave  
+  86:	c3                   	ret    
