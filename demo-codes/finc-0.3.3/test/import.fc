@@ -1,0 +1,28 @@
+import "test/lib.pkg";
+import "test/package.pkg";
+
+void main()
+{
+    library lib;
+	
+    lib.name = "lib-test";
+	
+    printf("%s\n", lib.name);
+	
+    pkgtest();
+	
+    char ch;
+    float f;
+    int ret_int;
+	
+    ch = 'H';
+    f = 0.99;
+	
+    ret_int = int_char( ch );
+    ch = char_float( f );
+	
+    printf("return int: %d\n", ret_int);	
+    printf("return char: %c\n", ch);	
+    
+    printf("%s\n", string_void());
+}

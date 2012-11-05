@@ -1,0 +1,24 @@
+Fava in C TODO
+----
+finc-0.4:
+2002.07.30 -
+support for thread.
+support for Dooloo.
+
+finc-0.3:
+2002.05.10
+------
+add support for VxWorks. (also a VxWorks's shell like shell!)
+
+finc-0.2:
+2002.04.10
+------
+fix array bugs!
+fix pointer bugs!
+fix string bugs!
+
+rewrite memory manager!
+add support for struct!
+
+ffxz
+ffxz@gnuchina.org

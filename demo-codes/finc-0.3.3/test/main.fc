@@ -1,0 +1,16 @@
+void test_func()
+{
+    return;
+}
+
+void main()
+{
+    int i;
+    pointer tt;
+    
+    tt = null;
+    for (i=0; i<10; i++)
+	printf("%d\n", i);
+
+    return 10;
+}

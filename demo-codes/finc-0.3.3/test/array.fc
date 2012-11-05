@@ -1,0 +1,30 @@
+void main (string args[])
+{
+	string sarray[5];
+	sarray[0] = "string0";
+	sarray[1] = "string0";
+	sarray[2] = "string0";
+	sarray[3] = "string0";
+	sarray[4] = "string0";
+
+	printf("%s\n", sarray[0]);
+	printf("%s\n", sarray[1]);
+	printf("%s\n", sarray[2]);
+	printf("%s\n", sarray[3]);
+	printf("%s\n", sarray[4]);
+	int array[10];
+
+	array[0] = 0;
+	array[1] = 1;
+	array[2] = 2;
+	array[3] = 3;
+	array[4] = 4;
+	array[5] = 5;
+
+	printf("%d\n", array[0]);
+	printf("%d\n", array[1]);
+	printf("%d\n", array[2]);
+	printf("%d\n", array[3]);
+	printf("%d\n", array[4]);
+	printf("%d\n", array[5]);
+}

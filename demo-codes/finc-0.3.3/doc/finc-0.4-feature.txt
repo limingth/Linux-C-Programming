@@ -1,0 +1,19 @@
+FinC 0.4 feature list:
+- thread support.
+- generate pkg source file from ELF library file.
+- a FinC sytanx like shell:finsh, support for Dooloo and VxWorks.
+- API:network, hash, map.
+- optimize the parser engine code.
+
+plan release time: 2002.6 - 7.
+
+FinC 0.4版本计划实现功能概述
+- 脚本多线程支持和解析器多线程支持（或者说多任务，相对于广大的实时操作系统而言）。
+- 提供一个小工具以对ELF二进制文件生成FinC包源代码。
+- 一个支持Dooloo和VxWorks的类似FinC语法的shell程序。
+- 实现一些API，包括网络，哈希表和Map映射表。
+- 优化文法扫描引擎（由于在0.3版本中，基本上是完完全全按类C语法风格的BNF手工实现了扫描引擎，感觉递归过多，效率不高）。
+
+0.4 版本的重点是多线程支持和优化文法扫描引擎。
+
+预计发布时间：2002.6 - 7（由于这段时间估计会有些事，同时要开始Dragonfly的一些开发计划，所以进度可能会稍微变慢）。

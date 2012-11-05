@@ -1,0 +1,15 @@
+void main (string args[])
+{
+    int i=0;
+
+    i = i++;
+    
+    printf("i is %d\n", i);    
+    printf("i is %d\n", i = i++);
+
+	i = i--;
+	printf("i is %d\n", i);
+	printf("i is %d\n", i = --i);
+	printf("sub i:%d\n", --i);
+	printf("plus i:%d\n", ++i);
+}

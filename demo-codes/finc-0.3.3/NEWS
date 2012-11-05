@@ -1,0 +1,10 @@
+What's new in FinC 0.3 release?
+since FinC 0.3 beta3
+- use ffcall code to call foreign function.
+- add more language API.
+- fix some bugs.
+- code clean( use more macro to improve effect and configure).
+
+you could use macro to open xml and database support, and FinC defautl don't support.
+
+the xml and database engine is very lightweight and forcus to embedded system.

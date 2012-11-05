@@ -1,0 +1,12 @@
+void main(string args[])
+{
+    pointer tt;
+    string dst;
+    string str="string21323434534";
+    
+    tt = addrof(str);
+    
+    dst = contentof(tt);
+    
+    printf("%s\n", dst);    
+}

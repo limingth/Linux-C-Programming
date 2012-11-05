@@ -1,0 +1,10 @@
+void main(string args[])
+{
+	int i, j;
+	
+	i = 1;
+	j = 2;
+	i = i/(i*j+100)-100 +i/j+j*j*j*i;
+	
+	printf("i is %d\n", i);
+}

@@ -1,0 +1,17 @@
+# Makefile for building FinC
+#     Project: FinC
+
+all:
+	make -C tiny -f Makefile.dooloo
+	make -C finc -f Makefile.dooloo
+
+clean:
+	rm -f core
+	make -C tiny -f Makefile.dooloo clean
+	make -C finc -f Makefile.dooloo clean
+
+sample:
+	make -C embedded-sample -f Makefile.dooloo
+
+test:
+	make -C test -f Makefile.dooloo

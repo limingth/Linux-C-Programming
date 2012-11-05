@@ -1,0 +1,54 @@
+struct test
+{
+    int a;
+    int height;
+    string b;
+    int test;
+    string c;
+    int d;
+};
+
+struct str_test
+{
+    string name;
+    string id;
+    int height;
+    
+    test t;
+    
+    int i;
+};
+
+void main(string args[])
+{
+/*	test a;
+
+	a.a =100;
+	a.height = a.a + a.a;
+	a.b = "string b";
+	a.test = a.height*2;
+	a.c = "string c";
+	a.d =a.a+1;
+
+	printf("struct test program start:\n");
+	printf("a's a is %d\n", a.a);
+	printf("a's height is %d\n", a.height);
+	printf("a's b is %s\n", a.b);
+	printf("a's test is %d\n", a.test);
+	printf("a's c is %s\n", a.c);
+	printf("a's d is %d\n", a.d);
+*/
+    str_test ffxz;
+/*
+	ffxz.name = "fayfay";
+	ffxz.id = "ffxz";
+	ffxz.height = 180;
+*/
+    ffxz.i = 100;
+/*
+	printf("ffxz's name is %s\n", ffxz.name);
+	printf("ffxz's id is %s\n", ffxz.id);
+	printf("ffxz's height is %d\n", ffxz.height);
+*/
+    printf("ffxz's i is %s\n", ffxz.i);
+}

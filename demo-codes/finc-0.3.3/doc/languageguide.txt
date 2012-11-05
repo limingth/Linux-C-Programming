@@ -1,0 +1,125 @@
+Fava in C语言参考指南[简化版本-0.2]
+
+一、语言保留字
+void char short int float double pointer string bool
+unsigned static native 
+if else switch case for while return continue break addrof contentof
+import package struct
+true false null
+
+二、运算符
+一元运算符
++
+-
+++
+--
+（++，--只能是后操作，例如i++）
+
+二元运算符
+-
++
+*
+/
+%
+>
+<
+>=
+<=
+!=
+||
+&&
+
+位运算符
+暂时不支持，后续版本计划支持。
+
+特殊算符
+addrof 取数据块的地址
+contentof 取pointer类型数据指向的数据
+
+三、数据类型
+void
+char
+short
+int
+float
+double
+pointer 指针类型，长度和采用的处理器构架相关，x86为4，可以指向任何二进制数据块，类似于void指针
+string 字符串类型，特殊的指针类型。注意，string和C中的char*是不能划上等号的，操作string类型数据，请用系统string_* API。
+bool
+
+自定义数据类型struct，语法：
+struct StructName
+{
+declar...
+};
+自定义数据声明：
+StructName struct1;
+
+数组：
+目前支持两种数组。
+固定数组，采用type array[fixed]声明， fixed为它的长度。
+变长数组，采用type array[]声明，变长数组采用系统array_API调用。
+
+四、变量声明
+基本数据类型的变量在声明时可以采用变量列表的方式进行声明，例如：int var1, var2。
+基本数据类型的变量在声明时就可以进行初始化操作，包括全局变量，局部变量，静态变量。
+变量的声明不局限于函数前部，但是不能用于for循环等的括号中声明。
+结构型，数组型变量不可初始化。
+
+五、流程控制
+条件语句
+if (condition) 
+  statement
+else
+  statement
+或
+if (condition)
+  statement
+
+开关语句
+switch()
+{
+case 1:.. 
+case 2:.. 
+default:...
+}
+
+循环语句
+for( ; ; ;) statement
+及
+while (condition) statement
+
+跳出循环和继续循环
+beak;
+continue;
+
+五、函数
+声明语法
+returntype function_name(function_args) statement
+
+参数传递
+默认为形参传递，当参数为pointer类型时，为地址传递。
+返回时，如果不是pointer类型，都是返回数据的拷贝。
+
+六、包
+包相当于对系统的共享库的包裹。
+语法：
+package "libname" package-declar-statement
+及
+package package-declar-statement
+第一种语法是使用系统中文件名为libname的共享库。（此种情况在VxWorks系统中可能不可用，待定）
+第二种语法是使用链接到解析器中的库（此种情况对于类似VxWorks的系统非常有用）。
+在package-declar-statement中可以存在如下语法：
+returntype function_name(function_args);
+每当调用package的function_name时，都去调用库libname中的function_name函数。
+
+七、系统API
+array_API
+string_API
+整理中，略
+
+八、系统标准函数库
+hash_API 哈希表API
+symbol_API 脚本符号表API
+net_API 网络API
+整理重，略

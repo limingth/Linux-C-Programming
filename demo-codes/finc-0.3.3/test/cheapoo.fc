@@ -1,0 +1,46 @@
+struct class
+{
+	int id;
+	string name;
+
+	pointer get_name;
+	pointer set_name;
+
+	pointer get_id;
+	pointer set_id;
+};
+
+string class_get_name( class self )
+{
+	return self.name;
+}
+
+void class_set_name( class self, string name )
+{
+	self.name = name;
+}
+
+int class_get_id( class self )
+{
+	return self.id;
+}
+
+void class_set_id( class self , int id )
+{
+	self.id = id;
+}
+
+void main()
+{
+	class A;
+	A.get_name = class_get_name;
+	A.set_name = class_set_name;
+	A.get_id = class_get_id;
+	A.set_id = class_set_id;
+
+	A.set_id(A, 100);
+	printf("the class id is:%d\n",  A.get_id(A));
+
+	A.set_name(A, "test");
+	printf("the class name is:%s\n", A.get_name(A));
+}

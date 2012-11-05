@@ -1,0 +1,31 @@
+int global = 100;
+
+void main(string args[])
+{
+	int int_test = 100;
+	int tt = 10;
+	int hex = 0x100;
+
+	string ss = "test";
+
+	printf("int is %d\n", int_test);
+
+	string str= "This is a String test!";
+
+	printf("%s\n", str);
+
+	string str2 = int_test;
+	printf("int_test is %s\n", str2);
+
+	str2 = str;
+	printf("%s\n", str2);
+	
+	printf("%d\n", global);
+	printf("%d\n", hex);
+
+	float f = 2.55f;
+	printf("%f\n", f);
+	
+	// double d = 3.4d;
+	// printf("%f\n", d);
+}

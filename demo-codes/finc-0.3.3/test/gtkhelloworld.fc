@@ -1,0 +1,48 @@
+import "module/glib-1.2.pkg";
+import "module/gdk-1.2.pkg";
+import "module/gtk-1.2.pkg";
+
+void hello( pointer widget, pointer data )
+{
+	printf ("Hello World\n");
+}
+
+int delete_event( pointer widget, pointer event, pointer data )
+{
+	printf ("delete event occurred\n");
+
+	return true;
+}
+
+void destroy( pointer widget, pointer data )
+{
+    gtk_main_quit();
+}
+
+int main()
+{
+	pointer window;
+	pointer button;
+
+	gtk_init(null, null);
+
+	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+
+    gtk_signal_connect ( window, "delete_event", delete_event, null);
+    gtk_signal_connect ( window, "destroy", destroy, null);
+
+	button = gtk_button_new_with_label ("Hello World");
+
+    gtk_signal_connect ( button, "clicked", hello, null);
+    gtk_signal_connect_object ( button, "clicked", gtk_widget_destroy, window);
+
+	gtk_container_add (window, button);
+
+	gtk_widget_show (button);
+
+	gtk_widget_show (window);
+
+	gtk_main ();
+
+	return 0;
+}

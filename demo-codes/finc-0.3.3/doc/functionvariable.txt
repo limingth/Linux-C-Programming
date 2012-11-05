@@ -1,0 +1,16 @@
+Function Pointer variable Design
+
+Data type: FinCType_Func
+The raw data of function variable is address of a FinCFunc variable.
+
+1. Called in Foreign
+
+2. Called in Script
+get the FinCFunc variable through node evaluate, and then call it.
+example 1:
+pointer ptr=printf;
+when reach the 'printf' symbol, FinC will generate a FinCData as pointer type.
+while this FinCData's raw point to the really FinCFunc type variable.
+
+example 2:
+ptr("this is a function varablie test\n");

@@ -1,0 +1,88 @@
+string recv_buffer;
+string send_buffer;
+
+void buffer_init()
+{
+	string_set_size(recv_buffer, 1024);
+	string_set_size(send_buffer, 1024);
+}
+
+void http_header_read (int fd)
+{
+	net_recv (fd, recv_buffer, 1024);
+	printf("%s", recv_buffer);
+}
+
+void http_data_send (int fd)
+{
+	string data="<HTML><HEAD><TITLE> FinWeb 0.1 </TITLE></HEAD><BODY>FinWeb 0.1<BR></BODY></HTML>";
+	//http_common_header_send(fd, 200, string_length(data));
+	net_send (fd, data, string_length(data));
+}
+
+string error_string(int http_error)
+{
+        if ( http_error = 200 )
+        {
+			return "OK";
+        }
+		else if ( http_error = 404 )
+		{
+			return "Not Found";
+		}
+		else if ( http_error = 414 )
+		{
+			return "Request-URI Too Large";
+		}
+		else
+		{
+			return "Unknown error";
+		}
+}
+
+void http_common_header_send(int fd, int http_error, int content_len)
+{
+	sprintf(send_buffer, "HTTP/1.1 %03i %s\r\n", http_error, error_string(http_error));
+	net_send (fd, send_buffer, string_length(send_buffer));
+
+	sprintf(send_buffer, "Server: FinWeb/0.1\r\n\r\n");
+	net_send (fd, send_buffer, string_length(send_buffer));
+
+	sprintf(send_buffer, "Content-Type: text/html\n\n");
+	net_send (fd, send_buffer, string_length(send_buffer));
+
+	sprintf(send_buffer, "Content-length: %i\r\n", content_len);
+	net_send (fd, send_buffer, string_length(send_buffer));
+}
+
+void main ()
+{
+    int fd;
+	int client_socket;
+	pointer inetaddr;
+
+	buffer_init();
+
+	inetaddr = inetaddr_new_any();
+	inetaddr_set_port( inetaddr, 2000 );
+
+	fd = net_socket (SOCK_STREAM);
+	if ( net_bind (fd, inetaddr) != 0 )
+	{
+		printf("Can't bind a given address.\n");
+		inetaddr_destroy(inetaddr);
+		return;
+	}
+
+	net_listen (fd, 5);
+    while (1)
+    {
+		client_socket = net_accept (fd);
+
+		http_header_read (client_socket);
+		http_data_send (client_socket);
+		net_close(client_socket);
+	}
+	net_close(fd);
+	inetaddr_destroy(inetaddr);
+}

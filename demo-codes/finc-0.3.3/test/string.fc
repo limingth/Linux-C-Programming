@@ -1,0 +1,6 @@
+void main(string args[])
+{
+	string str = "This is a test!";
+
+	printf("%c\n", str[0]);
+}

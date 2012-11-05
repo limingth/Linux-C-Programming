@@ -1,0 +1,207 @@
+FinC Grammar v0.4
+------------------------------------------------------------
+2003-5-03 ffxz: add support for class, object
+2003-5-02 ffxz: add support for OR, XOR ...
+2002-5-15 ffxz: add support for line parser grammar.
+2002-4-14 ffxz: begin the 0.3 version grammar.
+------------------------------------------------------------
+line_input -> empty
+	| line_input line_start
+
+line_start -> decl_import
+	| decl_global
+	| decl_function
+	| decl_struct
+	| decl_package
+	| statement_block
+	| statement_expr
+	| statement_for
+	| statement_while
+	| statement_if
+
+input -> empty
+	| input declaration
+
+declaration -> decl_import
+	| decl_global
+	| decl_function
+	| decl_struct
+	| decl_package
+	| decl_class
+
+decl_global -> decl_variable
+decl_local -> decl_variable
+decl_variable -> type declaration_list ';'
+	| type identifier '[' V_INT ']' ';'
+	| type identifier '[' ']' ';'
+declarator_list -> declarator_list ',' declarator
+	| declarator
+declarator -> identifier
+	| identifier ASSIGN expr_assign
+
+decl_struct -> STRUCT identifier '{' decl_field_list '}' ';'
+decl_field_list -> decl_field_declarator
+	| decl_field_list decl_field_declarator
+decl_field_declarator -> type struct_declarator_list ';'
+	| type identifier '[' V_INT ']'
+	| type identifier '[' ']'
+struct_declarator_list -> struct_declarator_list ',' struct_declarator
+	| struct_declarator
+struct_declarator -> identifier
+
+decl_function -> type identifier '(' decl_param_type_list ')' statement_block
+decl_param_type_list -> decl_param_list
+	| decl_param_list ',' OPT_PARAM
+decl_param_list -> empty
+	| decl_param
+	| decl_param_list ',' decl_param
+decl_param -> type identifier
+	| type identifier '[' ']'
+	| type identifier '[' V_INT ']'
+
+decl_import -> IMPORT V_STRING ';'
+
+decl_package -> PACKAGE V_STRING '{' decl_package_func_list '}' ';'
+decl_package_func_list -> decl_package_func
+	| decl_package_func_list decl_package_func
+decl_package_func -> type identifier '(' decl_param_type_list ')' ';'
+
+decl_class -> class_head '{' decl_class_member_list '}' [;]
+class_head -> CLASS ID [:] [public] [class] class_scope
+class_scope -> ID
+	| class_scope ':'':' ID
+decl_class_member_list -> decl_class_class_member
+	| decl_class_member_list decl_class_member
+decl_member -> decl_class_attrib
+	| decl_class_method
+	| decl_class
+decl_class_attrib -> access-specifier decl_variable
+decl_class_method -> access-specifier type identifier '(' decl_param_type_list ')' statement_block
+	| virtual access-specifier type identifier '(' decl_param_type_list ')' statement_block
+	| virtual access-specifier type identifier '(' decl_param_type_list ')' '=' '0' ';'
+access-specifier -> PUBLIC | PRIVATE
+
+type -> type_list
+	| class_scope
+type_list -> type_basic
+	| type_list type_basic
+type_basic -> VOID
+	| CHAR
+	| SHORT
+	| INT
+	| STRING
+	| POINTER
+	| FLOAT
+	| DOUBLE
+	| LONG
+	| BOOL
+	| STATIC
+	| UNSIGNED
+	| CONST
+
+identifier -> IDENTIFIER
+
+literal -> V_STRING
+	| V_CHAR
+	| V_INT
+	| V_FLOAT
+	| V_LONG
+	| V_TRUE
+	| V_FALSE
+	| V_NULL
+
+expr -> expr_assign
+	| expr ',' expr_assign
+expr_assign -> expr_condition
+	| expr_unary ASSIGN expr_assign
+expr_condition -> expr_logic_or
+	| expr_logic_or '?' expr ':' expr_condition
+expr_logic_or -> expr_logic_and
+	| expr_logic_or OR expr_logic_and
+expr_logic_and -> expr_equality
+	| expr_logic_and AND expr_equality
+expr_inclusive_or -> expr_exclusive_or
+	| expr_inclusive_or '|' expr_exclusive_or
+expr_exclusive_or -> expr_and
+	| expr_exclusive '^' expr_and
+expr_and -> expr_equality
+	| expr_and '&' expr_equality
+expr_equality -> expr_relational
+	| expr_equality EQ expr_relational
+	| expr_equality NE expr_relational
+expr_relational -> expr_shift
+	| expr_relational '<' expr_shift
+	| expr_relational '>' expr_shift
+	| expr_relational LE expr_shift
+	| expr_relational GE expr_shift
+expr_shift -> expr_additive
+	| expr_shift '<<' expr_additive
+	| expr_shift '>>' expr_additive
+expr_additive -> expr_multiplicative
+	| expr_additive SUB expr_multiplicative
+	| expr_additive ADD expr_multiplicative
+expr_multiplicative -> expr_cast
+	| expr_multiplicative '*' expr_cast
+	| expr_multiplicative '/' expr_cast
+	| expr_multiplicative '%' expr_cast
+expr_cast -> expr_unary
+	| '(' type ')' expr_cast
+expr_unary -> expr_postfix
+	| ADD expr_cast
+	| INC expr_cast
+	| SUB expr_cast
+	| DEC expr_cast
+	| NOT expr_cast
+	| '~' expr_cast
+	| ADDR_OF '(' expr_unary ')'
+	| VALUE_OF '(' expr_unary ')'
+	| NEW 
+expr_postfix -> expr_primary
+	| expr_postfix '[' expr ']'
+	| expr_postfix INC
+	| expr_postfix DEC
+	| expr_postfix '.' identifier
+	| expr_postfix '(' param_list ')'
+expr_primary -> literal
+	| '(' expr ')'
+	| identifier
+	| '::' identifier
+	| SELF
+param_list -> empty
+	| expr_assign
+	| param_list ',' expr_assign
+
+statement -> decl_local
+	| statement_block
+	| statement_expr
+	| statement_return
+	| statement_for
+	| statement_while
+	| statement_if
+	| statement_continue
+	| statement_break
+	| statement_switch
+statement_in_block -> decl_local
+	| statement_block
+	| statement_node
+	| statement_return
+	| statement_for
+	| statement_while
+	| statement_if
+	| statement_switch
+statement_block -> '{' statement_list '}'
+statement_list -> statement_in_block
+	| statement_list statement_in_block
+statement_expr -> ';'
+	| expr ';'
+statement_return -> RETURN expr ';'
+statement_for -> FOR '(' statement_node statement_node expr ')' statement
+statement_while -> WHILE '(' expr ')' statement
+statement_if -> IF '(' expr ')' statement statement_if_else
+statement_if_else -> empty
+	| ELSE statement
+statement_continue -> CONTINUE ';'
+statement_break -> BREAK ';'
+statement_switch -> SWITCH '(' expr ')' statement_case
+statement_case -> CASE expr ':' statement_list
+	| DEFAULT ':' statement_list

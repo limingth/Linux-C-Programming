@@ -1,0 +1,8 @@
+void main( string args[] )
+{
+    int input;
+    
+    printf("please entry a int:");
+    scanf("%d", addrof(input));
+    printf("your input int is %d\n", input);
+}

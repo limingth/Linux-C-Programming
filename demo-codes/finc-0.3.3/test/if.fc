@@ -1,0 +1,14 @@
+void main (string args[])
+{
+	printf("1>2:");
+	if (1>2)printf("true\n");
+	else printf("false\n");
+	
+	printf("1==2:");
+	if(1==2)printf("true\n");
+	else printf("false\n");
+
+	printf("1<2:");
+	if(1<2)printf("true\n");
+	else printf("false\n");
+}

@@ -1,0 +1,168 @@
+FinC top level design
+---------------------
+0. FinC over view
+FinC is a strong C-like syntax script language. What's mean the strong C-like syntax?
+It supports some c style advance data type, such as pointer, struct, array. The other,
+its syntax is very like C syntax too.
+
+FinC will use recursive descent method to parse the FinC script source file. That
+recursive descent parser will be implement in 0.3 version.
+
+1. FinC main class
+Token  : get tokens from the source code.
+Parser : parser grammar in tokens.
+Node   : node class used in parser.
+Lang   : use for generate parser node.
+Data   : stand for the real data in runtime.
+Type   : stand for the data type.
+Struct : store for struct information.
+Field  : store for field of struct information.
+Var    : store for variable in runtime.
+Func   : stand for function, such as which function type, function node entry etc.
+Sys    : system API.(In FinC, the operator like '+' '-' '.', will be a system function)
+Env    : the script main envirnoment.
+
+Build in API:
+Array  : build in array api.(finc_array_*)
+String : build in string api.(finc_string_*)
+Hash   : build in hash table api.(finc_hash_*)
+Map    : build in map api.(finc_map_*)
+
+FinCLib: FinC API library
+
+2. The main flows
+First stage, lexemic the token of source file.
+ Source Code
++-----------+        +-----------+
+|           |	     |           |
+|  Lex      |	     |  Parser   |
+|   to      |=======>|    to     |
+|  Token    |	     |   Node    | (The Node will be organized as a Tree. At runtime,
+|           |	     |           |  these tree nodes is the most important
++-----------+	     +-----------+  reference.)
+
+Then, enter the second stage. In second stage, the runtime stage, the source are
+useless, and interpeter only depends the ParserNode Tree.
+
+At first of runtime stage, the only thing to do is call function, that's three function
+type:build in function, native function or function made of parser node. The most relate
+with script source are node function, so we only talk about node function.
+
+Interpreter will evaluate each node in function, and generate the node data, link the
+data to node data members. When evaluate a node, there are following cases:
+if the node is a identifier type, it will get the name as identifier variable value.
+if the node is a function type, it will call this function.
+if the node is a block, it will evaluate the sub nodes step by step.
+
+evaluate node:
++-----------+  ID
+|           |------>get value for local/global context, return the value.
+|  Node     | Func
+|           |------>get function from the global context, and then call it.
+| Devaluate | Block
+|           |------>devaluate each sub node.
++-----------+
+
+3. The whole system Object Oriented Design
+The base class is Object. It's only little members:
+struct _Object
+{
+	int refcount;
+	ObjectDestroy destroy;
+};
+
+The refcount member is an object refers to. You can use addref(object) to refers to
+this object, and unref(object) to unrefers to. When the refcount is 0, this object
+is released, at same time the destroy method also will be call to release extra memory.
+When interpreter alloc an new object, it must use object_init_object method to register
+itself destroy method to base class.
+
+All of the class in FinC and tinyLib are inherited from Object, the base class. And
+all of the object allocing must use the tinylib's mem_routine. In mem_routines, there
+is a alloc_object to record how many objects are alloced. So when the program finished,
+alloc_object must be 0, unless program has memory leaks.
+
+4. Data render
+base data type£º
+void
+int
+char
+short
+double
+float
+bool
+
+the base data type render as
++-----------+
+| refcount  |
+| type      |
+| pointer   |(NULL)
+| child     |(NULL)
+|-----------|
+| raw       |
+|           |
++-----------+
+
+advance data type:
+array data type
+- fixed array
+- dynamic array
+
+string data render as following:
++-----------+        +-----------+
+| refcount  | 	     | refcount  |
+| type      |	     | type      |(fixed sized char array)
+| pointer   |------->| pointer   |(NULL)
+| child     |(NULL)  | child     |(NULL)
+|-----------|	     |-----------|
+|address of |	     | raw       |
+|char raw   |	     |           |
++-----------+	     +-----------+
+
+the pointer type is like void* in C.
+render as:
++-----------+        +-----------+
+| refcount  | 	     | refcount  |
+| type      |	     | type      |(the real data type)
+| pointer   |------->| pointer   |(NULL)
+| child     |(NULL)  | child     |(NULL)
+|-----------|	     |-----------|
+|address of |	     | raw       |
+|real raw   |	     |           |
++-----------+	     +-----------+
+
+struct data type
++-----------+
+| refcount  |
+| type      |
+| pointer   |(NULL)
+| child     |-------->+-----------+
+|-----------|	      | field 1   |
+| raw       |	      |-----------|
+|           |	      | field 2   |
++-----------+	      |-----------|
+                      | field 3   |
+ 		      |-----------|
+                      | field 4   |
+		      +-----------+
+
+the field data render as
++-----------+
+| refcount  |
+| ref       |(TRUE, stand for data raw is not alloced by itself)
+| type      |
+| pointer   |(NULL)
+| child     |(as struct data render)
+|-----------|
+|address of |
+|field in   |
+|data raw   |
++-----------+
+
+3. TinyLib library
+TinyLib is a tiny object oriented designed library.
+It includes string, list, hash table, object, library(use in plug-in load), thread wrap.
+(library will be add in 0.3 version, and thread will be added in 0.4 or o.5 version)
+
+ffxz
+2002-4-16

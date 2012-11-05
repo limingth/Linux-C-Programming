@@ -1,0 +1,10 @@
+void test_function(int n)
+{
+	if (n==1)return;
+	else test_function(n-1);
+}
+
+void main()
+{
+	test_function(10);
+}

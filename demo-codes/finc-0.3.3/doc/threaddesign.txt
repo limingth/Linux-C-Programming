@@ -1,0 +1,20 @@
+#design document for thread
+
+Script API:
+int thread_start(method, args1, args2, args3)
+return: thread identification.
+
+int thread_self()
+return: self thread identification
+
+void thread_cancel( int tid )
+
+void thread_join ( int tid )
+
+void thread_testcancel( int tid )
+
+void thread_exit ()
+
+Node lock:
+lock for add node to tree.
+lock for evaluate node.

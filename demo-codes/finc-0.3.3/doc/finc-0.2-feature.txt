@@ -1,0 +1,103 @@
+FinC 0.2功能概述
+---------------
+和0.1版本相比的bug修正
+- 数组修正（0.1版数组基本不可用，会导致极大的内存泄漏）。
+- 逗号运算的修正。
+- 条件运算的修正。
+- 全局变量寻找不到的修正。
+
+0.2版本实现了的功能
+- 字符串数据类型的改进，把string和native string合并，当调用系统函数时会自动转换成native string。
+- 结构类型的支持（此处还有待测试，可能会存在严重的bug，主要可能出在和系统函数库交互时）。
+- 包的支持。
+- 变量声明的提高，可以采用变量列表声明，同时也可以在声明时进行变量的初始化操作（数组类型，结构类型除外）。和C99类似，可以在函数体内任何地方声明，而不局限于函数体头。
+- 和系统函数库的任意变量交互。
+- 变量内存的自动分配与释放（并不是100%，可能存在Bug，有待进一步测试）。
+- continue, break的支持。
+- 函数调用的改进。
+
+finc-0.2版本新功能脚本例子：
+-------------------------
+- 变量声明：
+int var1, var2, var3;
+int var1=100, var2;
+
+void test()
+{
+	int var1;
+
+	statement...
+	string str1;
+	statement...
+}
+
+- 包声明：
+package "libc.so"
+{
+	void printf(string format, ...);
+	void scanf(string format, ...);
+};
+
+package
+{
+	void printf(string format, ...);
+	void scanf(string format, ...);
+};
+
+说明：
+第一种方式，在解释器编译是并不一定需要把动态链接库编译进去。在import  package时，解释器会自动载入动态链接库。通过这样载入包后，你可以在自己的脚本中使用其中声明的函数（此例中的是printf和scanf）。
+第二种方式，指的是加载解释器中的函数，也就是说在解释器中一定要能够调用这个函数，有可能这个函数是解释器链接的，也可能是你自己写的，但一定能够调用。通过这个“默认包”加载后，你也能够在你的脚本中使用这个函数（此例中的是printf和scanf）。
+
+- 结构型数据类型
+struct person
+{
+	string name;
+	bool man;
+	int age;
+	int height;
+...
+};
+
+void test()
+{
+	person ffxz;
+
+	ffxz.name = "fayfay";
+	ffxz.man = true;
+	ffxz.age = 24;
+	ffxz.height = 180;
+
+	....
+}
+
+- 和系统函数库的交互：
+例如对于系统库函数：
+FILE *fopen (const char* path, const char* mode);
+
+在脚本中的交互：
+1、构建FILE结构体
+由于一般都是采用它的指针形式，所以可以直接用pointer类型（pointer类型相当于C中的void*，可以指向任何数据类型，目前指向函数除外）。当然也可能会用到FILE中的一些成员，这时可以这样来完成：
+一般的，你可以把原来C中定义的结构体全部转换成FinC结构体的声明形式，当然了为了偷懒，你也可以这样（假设你只对_flags域感兴趣）
+struct FILE/*详细定义，请看libc中相应的头文件*/
+{
+	int _flags;
+	pointer others;
+};
+
+2、加载链接库：
+package "libc.so"
+{
+	pointer fopen (string path, string mode);
+};
+
+3、调用
+void test()
+{
+	pointer fd;
+	int flags;
+
+	fd = fopen("/home/ffxz/test.txt", "r");
+	flags = (FILE)content_of(fd)._flags;
+}
+
+FinC的语言特点及和C的差别，请参看FinC语言参考指南。

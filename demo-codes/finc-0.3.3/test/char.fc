@@ -1,0 +1,7 @@
+void main(string argv[])
+{
+	char ch;
+	
+	ch = 'A';
+	printf("ch = %c\n", ch);
+}

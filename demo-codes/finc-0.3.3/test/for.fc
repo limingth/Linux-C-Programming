@@ -1,0 +1,19 @@
+void main (string args[])
+{
+	int i;
+
+	printf("for test begin...\n");
+	for( i=0; i<10; i++)
+	{
+		printf("i is :%d\n", i);
+	}
+/*	
+	i = 0;
+	
+	for( ; i<10; )
+	{
+	    printf("i is :%d\n", i);
+	    i++;
+	}
+*/
+}

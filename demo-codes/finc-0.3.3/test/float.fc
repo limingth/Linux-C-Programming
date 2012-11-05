@@ -1,0 +1,7 @@
+void main(string argv[])
+{
+	float f;
+	
+	// f = 1.2;
+	printf("f = %f\n", 1.2);
+}

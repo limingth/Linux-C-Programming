@@ -1,0 +1,8 @@
+void main()
+{
+	string str = "this is a test!";
+	
+	printf("%s:%d\n", str, string_length(str));
+	
+	printf("%s\n", string_add("string:", "added"));
+}

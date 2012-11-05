@@ -1,0 +1,12 @@
+int main()
+{
+    int a, b, c, d;
+    
+    a = b = c =0;
+    
+    d = (a = b = 5, c= a + b );
+    
+    printf("%d\n", d);
+    
+    return 0;
+}

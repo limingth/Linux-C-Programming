@@ -1,0 +1,14 @@
+FinC Make
+---------
+Please enter 'make' in FinC root directory, like that:
+
+make
+
+But it yet has not 'make install'! Please check embededd-sample and
+test for FinC lib API(finclib.h) and syntax standard.
+
+good luck!
+
+
+fayfay
+20020206

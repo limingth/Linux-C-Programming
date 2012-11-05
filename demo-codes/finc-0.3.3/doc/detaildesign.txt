@@ -1,0 +1,250 @@
+FinC 0.3 detail design
+----------------------
+Design for Token class
+Class Token is main for convert source to token.
+declaration and members:
+struct TokenEnv
+{
+	Bool eof;
+	Bool replay;
+
+	int line;
+	int position;
+
+	FinCTokenType current_token;
+
+	String* line_str;
+
+	String* last_str;
+	char last_char;
+	double last_double;
+	float last_float;
+	long last_long;
+
+	const char* (*read_line)(char* arg);
+	const char* arg;
+};
+
+Design for App class
+(class App will rename to Context for plan thread support in 0.3 version )
+Context includes some global information for a single script application.
+such as symbol, global variable table and static variable table.
+declaration and members:
+struct FinCApp
+{
+	Object parent;
+
+	HashTable* hash_global;
+	HashTable* hash_local;
+	HashTable* hash_functions;
+	HashTable* hash_struct;
+}
+
+hash_global, 全局变量
+hash_local, 局部变量，会随着每次调用上下文而变动。
+hash_functions, 函数符号表
+hash_struct, 结构体符号表
+
+Data类设计(0.2版本重点更新项目)
+Action
+新建
+消亡
+建立引用
+取消引用
+调用域成员
+
+和其他类的接口
+
+FinCData声明
+struct FinCData
+{
+	Object parent;//引用位
+
+	FinCType type//类型
+	Vector* child;
+	FinCData* pointer;//当它是指针类型时，只想的实际的FinCData数据变量
+
+	ADT raw;
+	Bool ref;
+};
+parent指示出它的引用参考
+type指示出数据的类型。
+其中raw为最关键的数据区域，每个类型的数据有具体的大小，raw域按大小来分配。
+ref指示出raw是否是引用方式，如果是引用方式，将没有权力释放数据域。
+child，sub Data矢量表，主要存储的结构为FinCData，从而实现struct声明的可递归性。
+由于采用的是vector，所以对域成员的引用采用index的方式。
+
+指针的处理：
+raw:指针只是一个4字节长度(不同的机器可能不一样，x86为4字节)的数据域，放置实际的数据块的地址。
+pointer指向实际的FinCData类型的数据变量。
+
+API操作说明
+FinCData* finc_data_new (FinCType* p_type, ADT p_ref)
+新建数据，主要是新开辟Type数据类型大小的数据区域。
+参数：
+p_type，生成数据块的数据类型
+p_ref，是否为引用类型
+返回：新开辟的数据块结构
+
+void finc_data_destroy (Object* self)
+销毁数据
+参数：
+self，FinCData本地数据
+返回：无
+
+void finc_data_init_data (ADT self, ADT data)
+初始化数据
+参数：
+self，FinCData本地数据
+data，数据块载入点
+返回：无
+
+void finc_data_assign (FinCData* self, FinCData* p_src)
+赋值（复制）内存区
+参数：
+self，FinCData本地数据
+p_src，复制数据块的数据源
+返回：无
+
+void finc_data_set_string (FinCData* self, String* p_value)
+设置字符串类型数据
+参数：
+self，FinCData本地数据
+p_value，需要设置的字符串
+返回：无
+
+String* finc_data_get_string (FinCData* self)
+获得字符串类型数据
+参数：
+self，FinCData本地数据
+返回：数据块中的字符串类型
+
+void finc_data_set_data (FinCData* self, ADT p_ptr)
+设置原始内存区指针
+参数：
+self，FinCData本地数据
+p_ptr，设置数据的数据指针
+返回：无
+
+ADT finc_data_get_data (FinCData* self)
+获得原始内存块
+参数：
+self，FinCData本地数据
+返回：抽象数据类型ADT
+
+FinCData* finc_data_convert (FinCData* self, FinCType* p_type)
+转换数据类型
+参数：
+self，FinCData本地数据
+p_type，需要转换的数据类型
+返回：转换了的数据结构
+
+FinCData* finc_data_get_field (FinCData* self, String* p_name)
+获得结构体的域数据
+参数：
+self，FinCData本地数据
+p_name，域成员名字
+返回：获得的域数据
+
+Type类修正：
+FinCType包含如下类型
+FinCType_Char
+FinCType_Short
+FinCType_Int
+FinCType_Float
+FinCType_Double
+FinCType_Bool
+FinCType_String
+FinCType_Pointer
+FinCType_Void
+FinCType_Struct
+FinCType_Unsigned
+FinCTYpe_Static
+FinCTYpe_Native
+
+Array类型
+FinCTypeArray_None
+FinCTypeArray_Fixed
+FinCTypeArray_Dynamic
+
+finc_type_new
+finc_type_new_name
+通过名字获得类型
+finc_type_get_size
+finc_type_destroy
+
+Struct类设计：
+struct FinCStruct
+{
+	Object parent;
+	String name;
+	HashTable hash_field;
+	int size;
+};
+结构成员hash_field采用hash表的方法
+方法
+new
+destory
+add_field
+get_field
+get_size
+
+FinCSys系统函数库
+FinCSys都具有统一的函数声明格式
+void function (FinCNode* p_node)
+参数：p_node，语法树结点
+
+增加：
+void finc_sys_pkg (FinCNode* p_node)
+void finc_sys_struct (FinCNode* p_node)
+void finc_sys_native_func (FinCNode* p_node)
+void finc_sys_break (FinCNode* p_node)
+void finc_sys_continue (FinCNode* p_node)
+void finc_sys_access (FinCNode* p_node)
+
+修正：
+void finc_sys_cast  (FinCNode* p_node)
+void finc_sys_global (FinCNode* p_node)
+void finc_sys_local (FinCNode* p_node)
+void finc_sys_condition (FinCNode* p_node)
+void finc_sys_comma (FinCNode* p_node)
+void finc_sys_content_of (FinCNode* p_node)
+void finc_sys_addr_of (FinCNode* p_node)
+void finc_sys_continue (FinCNode* p_node)
+void finc_sys_break (FinCNode* p_node)
+
+Design for Parser class
+Class Parser is the most important class for 0.2 to 0.3 change.
+It use a recursive descent parse method to parser FinC source file.
+However, there are some famous conflict in recursive descent parse,
+such as left recursion and left gene. In FinC grammar[detail please
+see FinC grammar spec v0.3], the great conflict is variable declaration
+and function declaration. There are both some type prefix. So, if
+want to resolve it, can do as normally apart left gene and breakout
+left recursive descent and also can do as look aheard for 1 token.
+
+There are only talk about how to resolve the conflict in grammar.
+conflict:variable declaration , function declaration
+example:
+(map is a struct data type)
+int a;
+int a=100, b;
+static int a;
+map a;
+int func();
+map func();
+
+function 'proc_type_prefix' will process the prefix of all declaration,
+and generate it to two global variable: g_type and g_id.
+for 'int a;'
+g_type is 'int' node, g_id is 'a' node.
+for 'static int a;'
+g_type is 'static int' node, g_id is 'a' node.
+fro 'map func()'
+g_type is 'map' node, g_id is 'func' node.
+after process prefix, there are some case for follow process.
+if it's ',' , it's a variable declaration.
+if it's ';' , it's a variable declaration.
+if it's '[' , it's a variable declaration, an array variable declaration.
+if it's '=' , it's a variable declaration.
+if it's '(' , it's a function declaration.

@@ -1,0 +1,11 @@
+void main (string args[])
+{
+	int i;
+
+	i=0;
+	while(i<100)
+	{
+		i++;
+		printf("i is :%d\n", i);
+	}
+}

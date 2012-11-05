@@ -1,0 +1,29 @@
+FinC-0.3 功能概述
+----------------
+FinC-0.2实现得差不多了，还存在些Bugs，但大致已经成形了。Ok，可以开始展望0.3版本的功能，希望0.3是大家所期待的版本。
+- 在原来的Fava Parser引擎基础上，编写新的Parser引擎，从而彻底的扔掉Lex&Bison。
+- 增加前置--，++，%运算。
+- 改进函数调用方法，能够更好的处理返回值（主要是指系统函数上）。
+- 重写App类代码，并改变名称为FinCContext，把原来散乱的全局变量组织到Context类中去。
+- 添加新的函数类型：FinCFuncType_Sys_API，主要用于语言一级的API函数处理，使得它能够直接处理解释器内部的FinCData类型。
+- 在新的函数类型FinCFuncType_Sys_API的基础上，采用array_API支持动态数组。
+- 开始添加语言级API，首先的将是array_API，string_API。
+- 增加数据类型long，和big类型，以支持大数运算。
+- 改进结构体声明方式，能够在结构体内使用以前声明的结构体。如：
+struct A
+{
+	string name;
+	int height;
+};
+
+struct B
+{
+	A person;
+	int lift;
+}
+- 开始提供windows版本和VxWorks版本。
+
+预计的发布时间：2002.5初
+
+ffxz, 2002-4-9凌晨
+(ffxz@gnuchina.org, http://fayfay.gnuchina.org)

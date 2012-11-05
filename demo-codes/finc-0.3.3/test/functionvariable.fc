@@ -1,0 +1,23 @@
+int func(int a)
+{
+	printf("funcion arg is: %d\n", a);
+
+	return a+a;
+}
+
+void main()
+{
+	pointer ptr;
+	int result;
+
+	ptr = func;
+
+	result = ptr(10);
+	printf("call function variable is: %d\n", result);
+
+	result = ptr(100);
+	printf("call function variable is: %d\n", result);
+
+	ptr = printf;
+	ptr("This is function variable test.\n");
+}

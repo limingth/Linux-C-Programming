@@ -1,0 +1,25 @@
+0.6
+---
+add support for virtual machine.
+
+0.5
+---
+update to object oriented Fava. (use ftk?)
+
+0.4
+---
+- Thread support.
+- a simple debugger.
+- Hash API
+- Map API
+- Network API
+
+0.3
+---
+- full embedded version, not use flex and bison to generate parser engine code.
+- Array API
+- String API
+- VxWorks version
+- Win32 version
+
+plan release beta in 2002.5

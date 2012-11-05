@@ -1,0 +1,40 @@
+int test(int n)
+{
+    if(n==10)
+    {
+	printf("n is 10, return 1!\n");
+	return 1;
+    }
+    
+    n=n+100;
+    
+    return n;
+}
+
+int test2(int n)
+{
+    int i = n;
+    
+    i = i+50;
+    
+    return i;
+}
+
+string test3(string str)
+{
+    return str;
+}
+
+void main(string args[])
+{
+    int n=10;
+
+    printf("test(%d) is %d\n", n, test(n));
+    printf("After test function, n is %d\n", n);
+    
+    int i=test2(n);
+    printf("After test2 function, n is %d\n", n);    
+    printf("i is %d\n", i);
+    
+    printf("%s\n", test3("this is a string function return test."));
+}
