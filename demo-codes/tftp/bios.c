@@ -1,0 +1,589 @@
+#include "types.h"
+#include "console.h"
+#include "utils.h"
+#include "39vf160.h"
+
+
+#define	MAX_CMD_LEN	128
+#define	MAX_ARGS	MAX_CMD_LEN/4
+#define	ENTER_KEY	0x0d
+#define	BACK_KEY	0x08
+#define	ESC_KEY		0x1b
+
+int IP_ADDRESS = 0xc0a8a865;
+
+#define	DFT_DOWNLOAD_ADDR	0x8000
+#define	DFT_PROGRAM_BEGIN	0
+unsigned int download_addr;
+unsigned int program_begin;	
+
+const char PROMPT[] = "\\>";
+const char star_line[] = "/*************************************************************/\n";
+#define	next_line()	putch('\n')
+#define	prompt()	puts(PROMPT)
+
+/************************************************/
+int tftp_main(unsigned long ip, unsigned long addr, int method);
+
+int LoadFile2Mem(int argc, char *argv[])
+{
+	
+	if(argc<2)
+	{
+		download_addr = DFT_DOWNLOAD_ADDR;
+		printf("No begin address for download, use default address 0x%x\n", download_addr);
+	}
+	else
+		download_addr = strtoul(argv[1], NULL, 0);
+	
+	tftp_main(IP_ADDRESS, download_addr, 0);
+
+	return 0;
+}
+
+int	ReadC(void)
+{
+	return getch();
+}
+
+#define LF		('\n')
+#define CR		('\r')
+#define CTRL_D		('D'-'@')
+#define BEGIN "begin"
+#define END   "end"
+
+int ReadLineZ(char *buffer, int maxlen)
+{
+    int pos = 0;
+    int c;
+
+    do {
+	c =ReadC();
+	if (c == CR || c == LF) {
+	    buffer[pos] = 0;
+	    return pos;
+	}
+	if (c == CTRL_D) {
+	    buffer[0] = 0;
+	    return -1;
+	}
+	if (c >= ' ' && pos < maxlen)
+	    buffer[pos++] = c;
+    } while (1);
+}
+
+int cistreq(char *s, char *t, int term)
+{
+    for ( ; ((*s | 0x20) == (*t | 0x20)) || (*s <= term && *t <= term); s++, t++)
+        if (*s <= term)
+            return 1;
+    return 0;
+}
+
+char *nextword(char *word)
+{
+    while (*word > ' ') word++;
+    while (*word == ' ') word++;
+    return word;
+}
+
+#define SYSCFG                          0x03FF0000
+#define IOPMOD                          (SYSCFG + 0x5000)
+#define IOPCON                          (SYSCFG + 0x5004)
+#define IOPDATA                         (SYSCFG + 0x5008)
+
+#define LED_BANK                        IOPDATA
+#define ALL_LEDS                        0xF0
+
+/* Set the LED(s) to given value (or mask)*/
+void uHALir_SetLEDs(unsigned int value) 
+{
+   *(unsigned int *)LED_BANK &= ~ALL_LEDS;
+   *(unsigned int *)LED_BANK |= value;
+}
+
+void SetLEDs(unsigned status)
+{
+   uHALir_SetLEDs( ALL_LEDS & (status << 4));
+}
+
+extern strcpy( char *, char * );
+
+int uue_download(unsigned address)
+{
+    char *buffer = (char *)address;
+    char *s;
+    int errs = 0;
+    int i;
+    unsigned c, w;
+    int offset = 0;
+    int len; 
+    unsigned led_status = 3;
+    char command_line[256];
+	char gpbuff[256];
+	
+    printf("Ready to download. Use 'transmit' option on terminal emulator to download file. \n");
+    s = command_line;
+    do {
+	if (ReadLineZ(s, sizeof(command_line)-1) == -1)
+	    return -1;
+    } while (!cistreq(s, BEGIN, ' '));
+    s = nextword(s);
+    s = nextword(s);
+    strcpy(gpbuff, s);
+    do {
+	s = command_line;
+	len = ReadLineZ(s, sizeof(command_line)-1);
+	led_status ^= 0x04;
+	SetLEDs(led_status);
+	if (len == -1 || cistreq(s, END, ' '))
+	    break;
+	c = *s++;
+	if (!c) continue;
+	len = c - 0x20;
+	if (len == 0) continue;
+	if (len > 45) { errs++; continue; }
+	i = 0;
+	while (1) {
+	    c = *s;
+	    if (c) {
+		c -= 0x20;
+		if (c >= 0x40) { errs++; break; }
+		s++;
+	    }
+	    w = (w << 6) + c;
+	    if ((++i & 3) == 0) {
+		buffer[offset++] = w >> 16;
+		if (--len == 0) break;
+		buffer[offset++] = w >> 8;
+		if (--len == 0) break;
+		buffer[offset++] = w;
+		if (--len == 0) break;
+	    }
+	}
+    } while (1);
+    SetLEDs(3);
+    if (errs)
+	printf("Error: %d errors encountered during download. \n", errs);
+    printf("Loaded file %s at address %x, size = %d \n", gpbuff, buffer, offset);
+    return 0;
+}
+
+int DownLoad(int argc, char *argv[])
+{
+	printf( "ev-7t bootloader download \n" );
+	
+	if(argc<2)
+	{
+		download_addr = DFT_DOWNLOAD_ADDR;
+		printf("No begin address for download, use default address 0x%x \n", download_addr);
+	}
+	else
+		download_addr = strtoul(argv[1], NULL, 0);
+	
+	uue_download( download_addr );
+		
+	return 0;	
+}
+
+int Go(int argc, char *argv[])
+{
+	printf("go at address 0x%x \n", download_addr);
+   ((void (*)(void))(download_addr))(); /* thanks, STheobald */
+	return 0;
+}
+
+int ProgFlash(int argc, char *argv[])
+{
+	unsigned int size = ~0;
+	unsigned int data_begin = ~0;
+	unsigned int prog_begin = ~0;
+	int overwrite0 = 1;		 
+
+	if(argc<4)
+	{
+		program_begin = DFT_PROGRAM_BEGIN;
+		puts("Arguments Error!\n");
+		puts("Usage:	prog a1 a2 size [-no0]\na1 = program begin address\na2 = data pointer to ram\nsize = program size(Bytes)\n-no0 = don't overwrite address 0\n");
+		return -1;
+	}	
+	
+	prog_begin = strtoul(argv[1], NULL, 0);			
+	data_begin = strtoul(argv[2], NULL, 0);
+	size = strtoul(argv[3], NULL, 0);
+	
+	if(size==0)
+	{
+		puts("Write 0 Bytes!\n");
+		return 0;
+	}
+	
+	printf("program flash begin @0x%x, from ram data @0x%x, size = %dBytes\nAre you sure? [y/n]", prog_begin, data_begin, size);
+	while(1)
+	{
+		if(kbhit())
+		{
+			int key = getch();
+			if(key=='y'||key=='Y')
+			{
+				putch(key);
+				next_line();
+				break;
+			}
+			if(key=='n'||key=='N')
+			{
+				putch(key);
+				next_line();
+				return 0;
+			}				
+		}
+			
+	}		
+
+#define	__ROM_SIZE	0x200000
+#define	BIOS_BASE	(__ROM_SIZE-0x10000)
+#define	BIOS_LOAD	(__ROM_SIZE-0x1000)
+	
+	if(argc>4)
+		if(strncmp(argv[4], "-no0", 4)==0)
+			overwrite0 = 0;		
+	
+	if((prog_begin==0)&&overwrite0)
+	{
+		unsigned int ins;
+		unsigned int bios_load_addr;
+		
+		ins = *(unsigned int *)data_begin;				
+		if((ins>>24)==0xea)			// instruction:	b	xxxx, now just support b instruction!!!			
+			bios_load_addr = ((ins&0xffffff)<<2)+8;
+		else
+			bios_load_addr = 4;		// other instruction, jump to 4
+													
+		bios_load_addr = (bios_load_addr-BIOS_LOAD-8)/4;
+		bios_load_addr = (bios_load_addr&0xffffff)|0xea000000;					
+				
+		*(unsigned int *)data_begin = 0xea000000+(BIOS_BASE-8)/4;		
+			
+		SectorProg(BIOS_LOAD, (unsigned short *)&bios_load_addr, 4);										
+	}
+			
+	SectorProg(prog_begin, (unsigned short *)data_begin, size);	
+	
+	return 0;
+}
+
+void trans_to_boot(int, int);
+
+int BootLoader(int argc, char *argv[])
+{
+	int key;
+	
+	puts("boot from flash, are you sure? [y/n]");
+	while(1)
+	{
+		if(kbhit())
+		{
+			key = getch();
+			if(key=='y'||key=='Y')
+			{
+				putch(key);
+				next_line();
+				trans_to_boot(BIOS_BASE, BIOS_LOAD);												
+			}
+			if(key=='n'||key=='N')
+			{
+				putch(key);
+				next_line();
+				break;	
+			}
+		}			
+	}
+	
+	return 0;
+}
+
+int AutoProgFlash(int argc, char *argv[])
+{
+	char ch_tmp[3][10];
+	char *para_ptr[4];	
+		
+	ultostr(ch_tmp[0], 0);	
+	ultostr(ch_tmp[1], DFT_DOWNLOAD_ADDR);	 	
+	ultostr(ch_tmp[2], tftp_main(IP_ADDRESS, DFT_DOWNLOAD_ADDR, 1));		
+	
+	para_ptr[1] = ch_tmp[0];
+	para_ptr[2] = ch_tmp[1];
+	para_ptr[3] = ch_tmp[2];	
+	
+	ProgFlash(4, para_ptr);
+	return	0;	
+}
+
+int CopyFlash(int argc, char *argv[])
+{
+	unsigned int src, dst, size;
+	char tmp[10];
+	
+	if(argc<4)
+	{
+		puts("Usage : copy a1 a2 size\n");
+		puts("a1 = src address, a2 = dst address, size = copy bytes (all in hex)\n");
+		return -1;
+	}
+	
+	src  = strtoul(argv[1], NULL, 0);
+	dst  = strtoul(argv[2], NULL, 0);
+	size = strtoul(argv[3], NULL, 0);
+	if(src==-1||dst==-1||size==-1)
+	{
+		puts("give error address\n");
+		return	-1;
+	}	
+	
+	FlashRead(src, (unsigned short *)DFT_DOWNLOAD_ADDR, size);
+	
+	argv[1] = argv[2];
+	argv[2] = tmp;
+	ultostr(tmp, DFT_DOWNLOAD_ADDR);
+	
+	ProgFlash(4, argv);
+
+	return 0;
+}
+
+int SetIPAddr(int argc, char *argv[])
+{
+	int i, j, err = 0;
+	char *str;
+	int ip[4];
+	char ch = '.';
+	
+	if(argc<2)
+	{
+		printf("IP address : %u.%u.%u.%u\n", (IP_ADDRESS>>24)&0xff, (IP_ADDRESS>>16)&0xff, (IP_ADDRESS>>8)&0xff, IP_ADDRESS&0xff);
+		return 0;
+	}
+	
+	str = argv[1];
+	
+	for(j=0; j<4; j++)
+	{
+		if(j==3)
+			ch = 0;
+		i = 0;
+		if(str[++i]!=ch)
+			if(str[++i]!=ch)
+				if(str[++i]!=ch)
+					err = 1;
+		str[i] = 0;
+		ip[j] = CharToDec(str, i);
+		if(ip[j]<0||ip[j]>254||err)
+		{
+			puts("IP address error\n");
+			return -1;
+		}			
+		str += i+1;
+	}
+	
+	printf("Set IP address : %u.%u.%u.%u\n", ip[0], ip[1], ip[2], ip[3]);					
+	IP_ADDRESS = (ip[0]<<24)|(ip[1]<<16)|(ip[2]<<8)|ip[3];
+	
+	return 0;	
+}
+/************************************************/
+int Help(int argc, char *argv[]);
+
+typedef int (*cmdproc)(int argc, char *argv[]);
+typedef struct {
+	const char *cmd;
+	const char *hlp;
+	cmdproc proc;
+}CMD_STRUC;
+
+CMD_STRUC CMD_INNER[] =
+				{ 
+					{"help", "show help", Help},
+					{"?", "= help", Help},	
+					{"load", "load file to memory", LoadFile2Mem},
+					{"prog", "program flash", ProgFlash},
+					{"boot", "boot from flash", BootLoader},
+					{"ap", "auto load image flie and program flash", AutoProgFlash},
+					{"copy", "copy flash from src to dst address", CopyFlash},
+					{"ipcfg", "show or set IP address", SetIPAddr},
+					{"go", "Go at 0x8000", Go},
+					{"dn", "ev-7t bootloader download", DownLoad},					
+					{NULL, NULL, NULL}
+				};
+
+int Help(int argc, char *argv[])
+{
+	int i;	
+	
+	for(i=0; CMD_INNER[i].cmd!=NULL; i++)
+	{
+		if(CMD_INNER[i].hlp!=NULL)
+		{
+			printf(CMD_INNER[i].cmd);
+			puts("	------	");
+			printf(CMD_INNER[i].hlp);
+			putch('\n');
+		}
+	}
+	
+	return 0;
+}
+
+/************************************************/
+static void ParseArgs(char *cmdline, int *argc, char **argv)
+{
+#define STATE_WHITESPACE	0
+#define STATE_WORD			1
+
+	char *c;
+	int state = STATE_WHITESPACE;
+	int i;
+
+	*argc = 0;
+
+	if(strlen(cmdline) == 0)
+		return;
+
+	/* convert all tabs into single spaces */
+	c = cmdline;
+	while(*c != '\0')
+	{
+		if(*c == '\t')
+			*c = ' ';
+		c++;
+	}
+	
+	c = cmdline;
+	i = 0;
+
+	/* now find all words on the command line */
+	while(*c != '\0')
+	{
+		if(state == STATE_WHITESPACE)
+		{
+			if(*c != ' ')
+			{
+				argv[i] = c;		//½«argv[i]Ö¸Ïòc
+				i++;
+				state = STATE_WORD;
+			}
+		}
+		else
+		{ /* state == STATE_WORD */
+			if(*c == ' ')
+			{
+				*c = '\0';
+				state = STATE_WHITESPACE;
+			}
+		}
+		c++;
+	}
+	
+	*argc = i;
+#undef STATE_WHITESPACE
+#undef STATE_WORD
+}
+
+static int GetCmdMatche(char *cmdline)
+{
+	int i;	
+	
+	for(i=0; CMD_INNER[i].cmd!=NULL; i++)
+	{
+		if(strncmp(CMD_INNER[i].cmd, cmdline, strlen(CMD_INNER[i].cmd))==0)
+			return i;
+	}
+	
+	return -1;
+}
+
+static int ParseCmd(char *cmdline, int cmd_len)
+{
+	int argc, num_commands;
+	char *argv[MAX_ARGS];
+
+	ParseArgs(cmdline, &argc, argv);
+
+	/* only whitespace */
+	if(argc == 0) 
+		return 0;
+	
+	num_commands = GetCmdMatche(argv[0]);
+	if(num_commands<0)
+		return -1;
+		
+	if(CMD_INNER[num_commands].proc!=NULL)	
+		CMD_INNER[num_commands].proc(argc, argv);
+				
+	return 0;			
+}
+
+/************************************************/
+
+int main()
+{
+	char command[MAX_CMD_LEN];
+	char key;
+	int i;
+//	unsigned short tmp[32];
+	
+	console_init();
+	next_line();
+	puts(star_line);
+	puts("Bios for download and program.\n");
+	puts("Author Jerry\n");
+	puts("Build date : "__DATE__" Time : "__TIME__"\n");	
+	printf("Type help for help.\n");
+	puts(star_line);	
+	prompt();
+	
+//		printf("%x", ReadSWPID());		
+//		for(i = 0; i<32; i++)
+//			tmp[i] = 32-i;
+//		FlashProg(0x40000, tmp, 32);	
+//		SectorErase(0x40000);	
+	
+	i = 0;
+	
+	for(;;)
+	{
+		if(kbhit())
+		{
+			key = getch();
+			if(key==BACK_KEY)
+			{			
+				i -= i?1:0;
+				putch(key);
+			}
+			else
+			if(key==ENTER_KEY)
+			{
+				int tmp;
+				command[i] = 0;
+				next_line();
+				tmp = ParseCmd(command, i);
+				if(tmp<0)
+					puts("Bad command\n");
+				prompt();
+				
+				i = 0;
+			}
+			else
+			{
+				if(i<MAX_CMD_LEN-1)
+					command[i++] = key;
+					putch(key);
+			}				
+		}
+	}
+	
+}
+
+
+
+
+
