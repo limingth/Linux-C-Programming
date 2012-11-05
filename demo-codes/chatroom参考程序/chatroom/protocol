@@ -1,0 +1,64 @@
+1)
+<client>
+LOGIN|name|pass
+
+<server to me>
+OK
+USRL|name1|name2|...
+-or-
+ERRLOGIN
+ERRONLINE
+
+<server to others>
+ADD|name
+
+2)
+<client>
+REG|name|pass
+
+<server to me>
+OK
+USRL|name1|name2|...
+-or-
+ERRREGEXIST
+
+<server to others>
+ADD|name
+
+3)
+<client>
+(disconnect)
+
+<server to others>
+DEL|name
+
+4)
+<client>
+TOALL|message
+
+<server to others>
+STOALL|who|message
+
+5)
+<client>
+PUB|whom|message
+
+<server to me>
+(nothing)
+-or-
+ERRTARG
+
+<server to whom>
+PUBTOME|who|message
+
+<server to others>
+SPUB|who|whom|message
+
+6)
+<client>
+PRIV|whom|message
+
+<server to me>
+SPRIV|who|message
+-or-
+ERRTARG
