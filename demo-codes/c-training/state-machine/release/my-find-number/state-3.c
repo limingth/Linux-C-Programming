@@ -84,8 +84,8 @@ int pos = 0;
 
 void action_save(void)
 {
-    numstr[counter][pos] = buf[i];
-    pos++;
+	numstr[counter][pos] = buf[i];
+	pos++;
 }
 
 void action_zero(void)
