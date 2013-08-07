@@ -9,7 +9,7 @@ require 'fileutils'
 def translate(line, sl, tl)
         url = "http://translate.google.cn/translate_a/t?client=t&hl=#{tl}&sl=#{sl}&tl=#{tl}&ie=UTF-8&oe=UTF-8&trs=1&sc=1&q=#{line}"
 	uri = URI.parse URI::encode(url)
-r = Net::HTTP.get(uri)
+	r = Net::HTTP.get(uri)
 	JSON::parse(r.gsub(/,+/, ',')).first.first.first
 end
 
